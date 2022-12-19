@@ -29,6 +29,10 @@
 #ifndef SC_MSGDEFS_H
 #define SC_MSGDEFS_H
 
+#ifdef CFE_EDS_ENABLED_BUILD
+#include "sc_eds_cc.h"
+#else
+
 /************************************************************************
  * Macro Definitions
  ************************************************************************/
@@ -48,15 +52,15 @@
  * \name ATS/RTS Cmd Status macros
  * \{
  */
-#define SC_EMPTY           0 /**< \brief the object is not loaded */
-#define SC_LOADED          1 /**< \brief the object is loaded */
-#define SC_IDLE            2 /**< \brief the object is not executing */
-#define SC_EXECUTED        3 /**< \brief the object has completed executing */
-#define SC_SKIPPED         4 /**< \brief the object (ats command) was skipped */
-#define SC_EXECUTING       5 /**< \brief the object is currently executing */
-#define SC_FAILED_CHECKSUM 6 /**< \brief the object failed a checksum test */
-#define SC_FAILED_DISTRIB  7 /**< \brief the object could not be sent on the SWB */
-#define SC_STARTING        8 /**< \brief used when an inline switch is executed */
+#define SC_STATUS_EMPTY    0 /**< \brief the object is not loaded */
+#define SC_STATUS_LOADED          1 /**< \brief the object is loaded */
+#define SC_STATUS_IDLE            2 /**< \brief the object is not executing */
+#define SC_STATUS_EXECUTED        3 /**< \brief the object has completed executing */
+#define SC_STATUS_SKIPPED         4 /**< \brief the object (ats command) was skipped */
+#define SC_STATUS_EXECUTING       5 /**< \brief the object is currently executing */
+#define SC_STATUS_FAILED_CHECKSUM 6 /**< \brief the object failed a checksum test */
+#define SC_STATUS_FAILED_DISTRIB  7 /**< \brief the object could not be sent on the SWB */
+#define SC_STATUS_STARTING        8 /**< \brief used when an inline switch is executed */
 /**\}*/
 
 /**
@@ -666,5 +670,7 @@
 #endif
 
 /**\}*/
+
+#endif
 
 #endif

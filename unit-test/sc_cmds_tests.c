@@ -83,12 +83,12 @@ void SC_ProcessAtpCmd_Test_SwitchCmd(void)
     Entry->CmdNumber = 1;
 
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 1;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     /* Set return value for CFE_TIME_Compare to make SC_CompareAbsTime return false, to satisfy first if-statement of
@@ -113,8 +113,8 @@ void SC_ProcessAtpCmd_Test_SwitchCmd(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdCtr == 1, "SC_OperData.HkPacket.AtsCmdCtr == 1");
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 0, "SC_OperData.HkPacket.AtsCmdErrCtr == 0");
     UtAssert_True(SC_OperData.NumCmdsSec == 1, "SC_OperData.NumCmdsSec == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_EXECUTED,
-                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_EXECUTED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_EXECUTED,
+                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_EXECUTED");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
 
@@ -145,12 +145,12 @@ void SC_ProcessAtpCmd_Test_NonSwitchCmd(void)
     Entry->CmdNumber = 1;
 
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 1;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     /* Set return value for CFE_TIME_Compare to make SC_CompareAbsTime return false, to satisfy first if-statement of
@@ -175,8 +175,8 @@ void SC_ProcessAtpCmd_Test_NonSwitchCmd(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdCtr == 1, "SC_OperData.HkPacket.AtsCmdCtr == 1");
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 0, "SC_OperData.HkPacket.AtsCmdErrCtr == 0");
     UtAssert_True(SC_OperData.NumCmdsSec == 1, "SC_OperData.NumCmdsSec == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_EXECUTED,
-                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_EXECUTED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_EXECUTED,
+                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_EXECUTED");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
 
@@ -207,12 +207,12 @@ void SC_ProcessAtpCmd_Test_InlineSwitchError(void)
     Entry->CmdNumber = 1;
 
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 1;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     /* Set return value for CFE_TIME_Compare to make SC_CompareAbsTime return false, to satisfy first if-statement of
@@ -237,8 +237,8 @@ void SC_ProcessAtpCmd_Test_InlineSwitchError(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdCtr == 0, "SC_OperData.HkPacket.AtsCmdCtr == 0");
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.NumCmdsSec == 1, "SC_OperData.NumCmdsSec == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_FAILED_DISTRIB,
-                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_FAILED_DISTRIB");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_FAILED_DISTRIB,
+                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_FAILED_DISTRIB");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == 1, "SC_OperData.HkPacket.LastAtsErrSeq == 1");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
 
@@ -280,12 +280,12 @@ void SC_ProcessAtpCmd_Test_SBErrorAtsA(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     /* Set to return true in order to satisfy the if-statement from which the function is called */
@@ -307,8 +307,8 @@ void SC_ProcessAtpCmd_Test_SBErrorAtsA(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdCtr == 0, "SC_OperData.HkPacket.AtsCmdCtr == 0");
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.NumCmdsSec == 1, "SC_OperData.NumCmdsSec == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_FAILED_DISTRIB,
-                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_FAILED_DISTRIB");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_FAILED_DISTRIB,
+                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_FAILED_DISTRIB");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA, "SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
 
@@ -366,12 +366,12 @@ void SC_ProcessAtpCmd_Test_SBErrorAtsB(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSB;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[1][0]    = 0;
 
     /* Set to return true in order to satisfy the if-statement from which the function is called */
@@ -393,8 +393,8 @@ void SC_ProcessAtpCmd_Test_SBErrorAtsB(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdCtr == 0, "SC_OperData.HkPacket.AtsCmdCtr == 0");
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.NumCmdsSec == 1, "SC_OperData.NumCmdsSec == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_FAILED_DISTRIB,
-                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_FAILED_DISTRIB");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_STATUS_FAILED_DISTRIB,
+                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_FAILED_DISTRIB");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSB, "SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSB");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
 
@@ -454,12 +454,12 @@ void SC_ProcessAtpCmd_Test_ChecksumFailedAtsA(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     SC_OperData.HkPacket.ContinueAtsOnFailureFlag = false;
@@ -483,8 +483,8 @@ void SC_ProcessAtpCmd_Test_ChecksumFailedAtsA(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA, "SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_FAILED_CHECKSUM,
-                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_FAILED_CHECKSUM");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_FAILED_CHECKSUM,
+                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_STATUS_FAILED_CHECKSUM");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, SC_ATS_CHKSUM_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -540,12 +540,12 @@ void SC_ProcessAtpCmd_Test_ChecksumFailedAtsB(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSB;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[1][0]    = 0;
 
     SC_OperData.HkPacket.ContinueAtsOnFailureFlag = false;
@@ -569,8 +569,8 @@ void SC_ProcessAtpCmd_Test_ChecksumFailedAtsB(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSB, "SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSB");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_FAILED_CHECKSUM,
-                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_FAILED_CHECKSUM");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_STATUS_FAILED_CHECKSUM,
+                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_STATUS_FAILED_CHECKSUM");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, SC_ATS_CHKSUM_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -626,12 +626,12 @@ void SC_ProcessAtpCmd_Test_ChecksumFailedAtsAContinue(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     SC_OperData.HkPacket.ContinueAtsOnFailureFlag = true;
@@ -655,8 +655,8 @@ void SC_ProcessAtpCmd_Test_ChecksumFailedAtsAContinue(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA, "SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_FAILED_CHECKSUM,
-                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_FAILED_CHECKSUM");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_FAILED_CHECKSUM,
+                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_STATUS_FAILED_CHECKSUM");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, SC_ATS_CHKSUM_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -700,12 +700,12 @@ void SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsA(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     /* Execute the function being tested */
@@ -716,8 +716,8 @@ void SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsA(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA, "SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSA");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_SKIPPED,
-                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_SKIPPED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_SKIPPED,
+                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_SKIPPED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, SC_ATS_MSMTCH_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -770,12 +770,12 @@ void SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsB(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSB;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[1][0]    = 0;
 
     /* Execute the function being tested */
@@ -786,8 +786,8 @@ void SC_ProcessAtpCmd_Test_CmdNumberMismatchAtsB(void)
     UtAssert_True(SC_OperData.HkPacket.AtsCmdErrCtr == 1, "SC_OperData.HkPacket.AtsCmdErrCtr == 1");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSB, "SC_OperData.HkPacket.LastAtsErrSeq == SC_ATSB");
     UtAssert_True(SC_OperData.HkPacket.LastAtsErrCmd == 1, "SC_OperData.HkPacket.LastAtsErrCmd == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_SKIPPED,
-                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_SKIPPED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_STATUS_SKIPPED,
+                  "SC_OperData.AtsCmdStatusTblAddr[1][0] == SC_STATUS_SKIPPED");
 
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, SC_ATS_MSMTCH_ERR_EID);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_ERROR);
@@ -840,7 +840,7 @@ void SC_ProcessAtpCmd_Test_CmdNotLoaded(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
@@ -891,7 +891,7 @@ void SC_ProcessAtpCmd_Test_CompareAbsTime(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
@@ -934,7 +934,7 @@ void SC_ProcessAtpCmd_Test_NextProcNumber(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_NONE;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
@@ -975,7 +975,7 @@ void SC_ProcessAtpCmd_Test_AtpState(void)
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_AppData.CurrentTime                = 1;
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EMPTY;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EMPTY;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_ATSA;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
@@ -1017,12 +1017,12 @@ void SC_ProcessAtpCmd_Test_CmdMid(void)
     Entry->CmdNumber = 1;
 
     SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 1;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     /* Set return value for CFE_TIME_Compare to make SC_CompareAbsTime return false, to satisfy first if-statement of
@@ -1046,8 +1046,8 @@ void SC_ProcessAtpCmd_Test_CmdMid(void)
     /* Verify results */
     UtAssert_True(SC_OperData.HkPacket.AtsCmdCtr == 1, "SC_OperData.HkPacket.AtsCmdCtr == 1");
     UtAssert_True(SC_OperData.NumCmdsSec == 1, "SC_OperData.NumCmdsSec == 1");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_EXECUTED,
-                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_EXECUTED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_EXECUTED,
+                  "SC_OperData.AtsCmdStatusTblAddr[0][0] == SC_STATUS_EXECUTED");
 
     call_count_CFE_EVS_SendEvent = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
 
@@ -1072,7 +1072,7 @@ void SC_ProcessRtpCommand_Test_Nominal(void)
     SC_AppData.CurrentTime                                                           = 1;
     SC_AppData.NextProcNumber                                                        = SC_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_STATUS_EXECUTING;
 
     /* Set to return true in order to satisfy the if-statement from which the function is called */
     ChecksumValid = true;
@@ -1116,7 +1116,7 @@ void SC_ProcessRtpCommand_Test_BadSoftwareBusReturn(void)
     SC_AppData.CurrentTime                                                           = 1;
     SC_AppData.NextProcNumber                                                        = SC_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_STATUS_EXECUTING;
 
     /* Set to return true in order to satisfy the if-statement from which the function is called */
     ChecksumValid = true;
@@ -1171,7 +1171,7 @@ void SC_ProcessRtpCommand_Test_BadChecksum(void)
     SC_AppData.CurrentTime                                                           = 1;
     SC_AppData.NextProcNumber                                                        = SC_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_STATUS_EXECUTING;
 
     /* Set to return false in order to generate error message SC_RTS_CHKSUM_ERR_EID */
     ChecksumValid = false;
@@ -1218,7 +1218,7 @@ void SC_ProcessRtpCommand_Test_NextCmdTime(void)
     SC_AppData.CurrentTime                                                           = 0;
     SC_AppData.NextProcNumber                                                        = SC_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_STATUS_EXECUTING;
 
     /* Execute the function being tested */
     SC_ProcessRtpCommand();
@@ -1246,7 +1246,7 @@ void SC_ProcessRtpCommand_Test_ProcNumber(void)
     SC_AppData.CurrentTime                                                           = 1;
     SC_AppData.NextProcNumber                                                        = SC_NONE;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_STATUS_EXECUTING;
 
     /* Execute the function being tested */
     SC_ProcessRtpCommand();
@@ -1301,7 +1301,7 @@ void SC_ProcessRtpCommand_Test_RtsNumberHigh(void)
     SC_AppData.CurrentTime                                                           = 1;
     SC_AppData.NextProcNumber                                                        = SC_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = SC_NUMBER_OF_RTS + 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_STATUS_EXECUTING;
 
     /* Execute the function being tested */
     SC_ProcessRtpCommand();
@@ -1329,7 +1329,7 @@ void SC_ProcessRtpCommand_Test_RtsStatus(void)
     SC_AppData.CurrentTime                                                           = 1;
     SC_AppData.NextProcNumber                                                        = SC_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EMPTY;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_STATUS_EMPTY;
 
     /* Execute the function being tested */
     SC_ProcessRtpCommand();
@@ -1399,7 +1399,7 @@ void SC_SendHkPacket_Test(void)
     for (i = 0; i < SC_NUMBER_OF_RTS - 1; i++)
     {
         SC_OperData.RtsInfoTblAddr[i].DisabledFlag = true;
-        SC_OperData.RtsInfoTblAddr[i].RtsStatus    = SC_EXECUTING;
+        SC_OperData.RtsInfoTblAddr[i].RtsStatus    = SC_STATUS_EXECUTING;
     }
 
     SC_OperData.RtsInfoTblAddr[SC_NUMBER_OF_RTS - 1].DisabledFlag = 0;
@@ -1651,7 +1651,7 @@ void SC_ProcessRequest_Test_HkMIDAutoStartRtsLoaded(void)
     SC_OperData.RtsCtrlBlckAddr = &RtsCtrlBlck;
 
     SC_AppData.AutoStartRTS                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_AppData.AutoStartRTS - 1].RtsStatus = SC_LOADED;
+    SC_OperData.RtsInfoTblAddr[SC_AppData.AutoStartRTS - 1].RtsStatus = SC_STATUS_LOADED;
 
     SC_InitTables();
 
@@ -1855,14 +1855,14 @@ void SC_ProcessRequest_Test_1HzWakeupRtpExecutionTime(void)
     Entry->CmdNumber          = 1;
 
     SC_AppData.NextProcNumber             = SC_RTP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING; /* Causes switch to ATP */
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING; /* Causes switch to ATP */
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_OperData.NumCmdsSec                = 3;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 1;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_STATUS_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
     /* Execute the function being tested */
@@ -1916,7 +1916,7 @@ void SC_ProcessRequest_Test_1HzWakeupRtpExecutionTimeTooManyCmds(void)
     SC_AppData.NextCmdTime[SC_RTP]        = 0;
     SC_AppData.NextCmdTime[SC_ATP]        = 0;
     SC_OperData.NumCmdsSec                = 1000;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     /* Execute the function being tested */
     SC_ProcessRequest(&UT_CmdBuf.Buf);

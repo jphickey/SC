@@ -59,6 +59,7 @@ void SC_StartRtsCmd(const CFE_SB_Buffer_t *CmdPacket)
      ** Verify command packet length...
      */
     if (SC_VerifyCmdLength(&CmdPacket->Msg, sizeof(SC_RtsCmd_t)))
+
     {
         /*
          ** Check start RTS parameters
@@ -74,7 +75,7 @@ void SC_StartRtsCmd(const CFE_SB_Buffer_t *CmdPacket)
             if (SC_OperData.RtsInfoTblAddr[RtsIndex].DisabledFlag == false)
             {
                 /* the requested RTS is not being used and is not empty */
-                if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_LOADED)
+                if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_STATUS_LOADED)
                 {
                     /*
                      ** Check the command length
@@ -90,7 +91,7 @@ void SC_StartRtsCmd(const CFE_SB_Buffer_t *CmdPacket)
                         /*
                          **  Initialize the RTS info table entry
                          */
-                        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_EXECUTING;
+                        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_STATUS_EXECUTING;
                         SC_OperData.RtsInfoTblAddr[RtsIndex].CmdCtr         = 0;
                         SC_OperData.RtsInfoTblAddr[RtsIndex].CmdErrCtr      = 0;
                         SC_OperData.RtsInfoTblAddr[RtsIndex].NextCommandPtr = 0;
@@ -205,10 +206,10 @@ void SC_StartRtsGrpCmd(const CFE_SB_Buffer_t *CmdPacket)
                 /* make sure that RTS is not disabled, empty or executing */
                 if (SC_OperData.RtsInfoTblAddr[RtsIndex].DisabledFlag == false)
                 {
-                    if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_LOADED)
+                    if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_STATUS_LOADED)
                     {
                         /* initialize the RTS info table entry */
-                        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_EXECUTING;
+                        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_STATUS_EXECUTING;
                         SC_OperData.RtsInfoTblAddr[RtsIndex].CmdCtr         = 0;
                         SC_OperData.RtsInfoTblAddr[RtsIndex].CmdErrCtr      = 0;
                         SC_OperData.RtsInfoTblAddr[RtsIndex].NextCommandPtr = 0;
@@ -333,7 +334,7 @@ void SC_StopRtsGrpCmd(const CFE_SB_Buffer_t *CmdPacket)
             for (RtsIndex = FirstIndex; RtsIndex <= LastIndex; RtsIndex++)
             {
                 /* count the entries that were actually stopped */
-                if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_EXECUTING)
+                if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_STATUS_EXECUTING)
                 {
                     SC_KillRts(RtsIndex);
                     StopCount++;
@@ -555,12 +556,12 @@ void SC_KillRts(uint16 RtsIndex)
         CFE_EVS_SendEvent(SC_KILLRTS_INV_INDEX_ERR_EID, CFE_EVS_EventType_ERROR, "RTS kill error: invalid RTS index %d",
                           RtsIndex);
     }
-    else if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_EXECUTING)
+    else if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_STATUS_EXECUTING)
     {
         /*
          ** Stop the RTS from executing
          */
-        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus       = SC_LOADED;
+        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus       = SC_STATUS_LOADED;
         SC_OperData.RtsInfoTblAddr[RtsIndex].NextCommandTime = SC_MAX_TIME;
 
         /*
@@ -593,9 +594,9 @@ void SC_AutoStartRts(uint16 RtsNumber)
         /*
          ** Format the command packet to start the first RTS
          */
-        CFE_MSG_Init(&CmdPkt.CmdHeader.Msg, CFE_SB_ValueToMsgId(SC_CMD_MID), sizeof(SC_RtsCmd_t));
+        CFE_MSG_Init(CFE_MSG_PTR(CmdPkt), CFE_SB_ValueToMsgId(SC_CMD_MID), sizeof(SC_RtsCmd_t));
 
-        CFE_MSG_SetFcnCode(&CmdPkt.CmdHeader.Msg, SC_START_RTS_CC);
+        CFE_MSG_SetFcnCode(CFE_MSG_PTR(CmdPkt), SC_START_RTS_CC);
 
         /*
          ** Get the RTS ID to start.
@@ -605,7 +606,7 @@ void SC_AutoStartRts(uint16 RtsNumber)
         /*
          ** Now send the command back to SC
          */
-        CFE_SB_TransmitMsg(&CmdPkt.CmdHeader.Msg, true);
+        CFE_SB_TransmitMsg(CFE_MSG_PTR(CmdPkt), true);
     }
     else
     {

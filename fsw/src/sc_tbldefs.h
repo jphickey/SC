@@ -30,6 +30,10 @@
 #include "cfe.h"
 #include "sc_platform_cfg.h"
 
+#ifdef CFE_EDS_ENABLED_BUILD
+#include "sc_eds_typedefs.h"
+#else
+
 /**
  * \defgroup cfscstblids ID definitions for cFE Table Services manage table request command
  * \{
@@ -106,5 +110,7 @@ typedef struct
     uint16          NextCommandPtr;  /**< \brief where next rts cmd is */
     uint16          UseCtr;          /**< \brief how many times RTS is run */
 } SC_RtsInfoEntry_t;
+
+#endif
 
 #endif

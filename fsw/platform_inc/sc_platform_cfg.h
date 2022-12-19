@@ -16,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ************************************************************************/
-
 /**
  * @file
  *   This file contains the platform configuration parameters used by
@@ -24,7 +23,6 @@
  */
 #ifndef SC_PLATFORM_CFG_H
 #define SC_PLATFORM_CFG_H
-
 /**
  * \defgroup cfsscplatformcfg CFS Stored Command Platform Configuration
  * \{
@@ -55,6 +53,8 @@
  *       This parameter can't be larger than 999.This parameter will dicate the size of
  *       The RTS Info Table.
  */
+#ifndef CFE_EDS_ENABLED_BUILD
+
 #define SC_NUMBER_OF_RTS 64
 
 /**
@@ -66,6 +66,8 @@
  *       This parameter can't be larger than an unsigned 16 bit
  *       integer (65535).
  */
+#endif
+
 #define SC_ATS_BUFF_SIZE 8000
 
 /**
@@ -88,7 +90,7 @@
  *       integer (65535).
  */
 #define SC_RTS_BUFF_SIZE 150
-
+#ifndef CFE_EDS_ENABLED_BUILD
 /**
  * \brief Max number of commands in each ATS
  *
@@ -99,6 +101,7 @@
  *       This parameter can't be larger than an unsigned 16 bit
  *       integer (65535).
  */
+
 #define SC_MAX_ATS_CMDS 1000
 
 /**
@@ -111,6 +114,7 @@
  *  \par Limits:
  *       This parameter needs to be less than or equal to SC_NUMBER_OF_RTS
  */
+#endif
 #define SC_LAST_RTS_WITH_EVENTS 20
 
 /**

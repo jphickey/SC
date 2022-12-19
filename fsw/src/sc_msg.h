@@ -35,6 +35,10 @@
 #include "cfe.h"
 #include "sc_platform_cfg.h"
 
+#ifdef CFE_EDS_ENABLED_BUILD
+#include "sc_eds_typedefs.h"
+#else
+
 /************************************************************************
  * Macro Definitions
  ************************************************************************/
@@ -201,5 +205,7 @@ typedef struct
 #endif
 
 /**\}*/
+
+#endif
 
 #endif
