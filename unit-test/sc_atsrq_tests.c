@@ -73,7 +73,7 @@ void SC_StartAtsCmd_Test_NominalA(void)
 
     UT_CmdBuf.StartAtsCmd.Payload.AtsId            = 1;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_IDLE;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_IDLE;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_StartAtsCmd(&UT_CmdBuf.StartAtsCmd));
@@ -95,7 +95,7 @@ void SC_StartAtsCmd_Test_NominalB(void)
 
     UT_CmdBuf.StartAtsCmd.Payload.AtsId            = 2;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_IDLE;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_IDLE;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_StartAtsCmd(&UT_CmdBuf.StartAtsCmd));
@@ -121,7 +121,7 @@ void SC_StartAtsCmd_Test_CouldNotStart(void)
 
     UT_CmdBuf.StartAtsCmd.Payload.AtsId            = 1;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_IDLE;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_IDLE;
 
     /* Set to cause SC_BeginAts to return false, in order to reach block starting with "could not start the ats" */
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHookAgreaterthanB, NULL);
@@ -379,7 +379,7 @@ void SC_KillAts_Test(void)
 
     /* Verify results */
     UtAssert_True(SC_OperData.AtsInfoTblAddr[0].AtsUseCtr == 1, "SC_OperData.AtsInfoTblAddr[0].AtsUseCtr == 1");
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_IDLE, "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_IDLE");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_IDLE, "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_IDLE");
     UtAssert_True(SC_AppData.NextCmdTime[SC_ATP] == SC_MAX_TIME, "SC_AppData.NextCmdTime[SC_ATP] == SC_MAX_TIME");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
@@ -392,7 +392,7 @@ void SC_SwitchAtsCmd_Test_Nominal(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 1;
 
     UT_SetDeferredRetcode(UT_KEY(SC_ToggleAtsIndex), 1, 1);
@@ -416,7 +416,7 @@ void SC_SwitchAtsCmd_Test_DestinationAtsNotLoaded(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 0;
 
     /* Execute the function being tested */
@@ -461,7 +461,7 @@ void SC_ServiceSwitchPend_Test_NominalA(void)
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHook3, NULL);
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 1;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 1;
 
@@ -471,8 +471,8 @@ void SC_ServiceSwitchPend_Test_NominalA(void)
     UtAssert_VOIDCALL(SC_ServiceSwitchPend());
 
     /* Verify results */
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
-                  "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING,
+                  "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false,
                   "SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false");
 
@@ -489,7 +489,7 @@ void SC_ServiceSwitchPend_Test_NominalB(void)
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHook3, NULL);
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 2;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 1;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 1;
 
@@ -499,8 +499,8 @@ void SC_ServiceSwitchPend_Test_NominalB(void)
     UtAssert_VOIDCALL(SC_ServiceSwitchPend());
 
     /* Verify results */
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
-                  "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING,
+                  "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false,
                   "SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false");
 
@@ -517,7 +517,7 @@ void SC_ServiceSwitchPend_Test_AtsEmpty(void)
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHook3, NULL);
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 0;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 0;
 
@@ -581,7 +581,7 @@ void SC_ServiceSwitchPend_Test_AtsNotStarted(void)
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHook3, NULL);
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 1;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 1;
 
@@ -589,7 +589,7 @@ void SC_ServiceSwitchPend_Test_AtsNotStarted(void)
     UtAssert_VOIDCALL(SC_ServiceSwitchPend());
 
     /* Verify results */
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_IDLE, "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_IDLE");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_IDLE, "SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_IDLE");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false,
                   "SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false");
 
@@ -710,12 +710,12 @@ void SC_JumpAtsCmd_Test_SkipOneCmd(void)
     UT_SC_StartAtsRq_CompareHookRunCount = 0;
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHook3, NULL);
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0]   = SC_LOADED;
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1]   = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0]   = SC_STATUS_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1]   = SC_STATUS_LOADED;
     SC_AppData.AtsTimeIndexBuffer[AtsIndex][0]     = 1;
     SC_AppData.AtsTimeIndexBuffer[AtsIndex][1]     = 2;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber         = 2;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 2;
 
@@ -723,10 +723,10 @@ void SC_JumpAtsCmd_Test_SkipOneCmd(void)
     UtAssert_VOIDCALL(SC_JumpAtsCmd(&UT_CmdBuf.JumpAtsCmd));
 
     /* Verify results */
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_SKIPPED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_SKIPPED");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_LOADED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_LOADED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_SKIPPED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_SKIPPED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_STATUS_LOADED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_STATUS_LOADED");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->CmdNumber == SC_AppData.AtsTimeIndexBuffer[AtsIndex][1],
                   "SC_OperData.AtsCtrlBlckAddr->CmdNumber == SC_AppData.AtsTimeIndexBuffer[AtsIndex][0]");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->TimeIndexPtr == 1, "SC_OperData.AtsCtrlBlckAddr->TimeIndexPtr == 1");
@@ -753,9 +753,9 @@ void SC_JumpAtsCmd_Test_AllCommandsSkipped(void)
     UT_SC_StartAtsRq_CompareHookRunCount = 0;
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHook3, NULL);
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0]   = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0]   = SC_STATUS_LOADED;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 1;
 
     /* Execute the function being tested */
@@ -803,20 +803,20 @@ void SC_JumpAtsCmd_Test_AtsNotLoaded(void)
     UT_SC_StartAtsRq_CompareHookRunCount = 0;
     UT_SetHookFunction(UT_KEY(CFE_TIME_Compare), UT_SC_StartAtsRq_CompareHook3, NULL);
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0]   = SC_SKIPPED;
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1]   = SC_SKIPPED;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0]   = SC_STATUS_SKIPPED;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1]   = SC_STATUS_SKIPPED;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber         = 1;
-    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState          = SC_STATUS_EXECUTING;
     SC_OperData.AtsInfoTblAddr[0].NumberOfCommands = 2;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_JumpAtsCmd(&UT_CmdBuf.JumpAtsCmd));
 
     /* Verify results */
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_SKIPPED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_SKIPPED");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_SKIPPED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_SKIPPED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_SKIPPED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_SKIPPED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_STATUS_SKIPPED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] == SC_STATUS_SKIPPED");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->CmdNumber == SC_AppData.AtsTimeIndexBuffer[AtsIndex][0],
                   "SC_OperData.AtsCtrlBlckAddr->CmdNumber == SC_AppData.AtsTimeIndexBuffer[AtsIndex][0]");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->TimeIndexPtr == 1, "SC_OperData.AtsCtrlBlckAddr->TimeIndexPtr == 1");

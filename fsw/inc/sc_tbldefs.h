@@ -36,6 +36,10 @@
 #define SC_ATS_HEADER_SIZE (sizeof(SC_AtsEntryHeader_t)) /**< \brief ATS header size in bytes */
 #define SC_RTS_HEADER_SIZE (sizeof(SC_RtsEntryHeader_t)) /**< \brief RTS header size in bytes */
 
+#ifdef CFE_EDS_ENABLED_BUILD
+#include "sc_eds_typedefs.h"
+#else
+
 /**
  * \defgroup cfscstblids ID definitions for cFE Table Services manage table request command
  * \{
@@ -164,5 +168,7 @@ typedef struct
     SC_RtsEntryHeader_t Header; /**< \brief RTS header */
     CFE_MSG_Message_t   Msg;    /**< \brief MSG header */
 } SC_RtsEntry_t;
+
+#endif
 
 #endif

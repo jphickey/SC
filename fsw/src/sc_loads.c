@@ -107,7 +107,7 @@ void SC_LoadAts(uint16 AtsIndex)
             } /* else if the cmd number is valid and the command */
             /* has not already been loaded                     */
             else if (AtsCmdNum <= SC_MAX_ATS_CMDS &&
-                     SC_OperData.AtsCmdStatusTblAddr[AtsIndex][SC_ATS_CMD_NUM_TO_INDEX(AtsCmdNum)] == SC_EMPTY)
+                     SC_OperData.AtsCmdStatusTblAddr[AtsIndex][SC_ATS_CMD_NUM_TO_INDEX(AtsCmdNum)] == SC_STATUS_EMPTY)
             {
                 /* get message size */
                 CFE_MSG_GetSize(&EntryPtr->Msg, &MessageSize);
@@ -127,7 +127,7 @@ void SC_LoadAts(uint16 AtsIndex)
                         SC_AppData.AtsCmdIndexBuffer[AtsIndex][SC_ATS_CMD_NUM_TO_INDEX(AtsCmdNum)] = AtsEntryIndex;
 
                         /* set the command status to loaded in the command status table */
-                        SC_OperData.AtsCmdStatusTblAddr[AtsIndex][SC_ATS_CMD_NUM_TO_INDEX(AtsCmdNum)] = SC_LOADED;
+                        SC_OperData.AtsCmdStatusTblAddr[AtsIndex][SC_ATS_CMD_NUM_TO_INDEX(AtsCmdNum)] = SC_STATUS_LOADED;
 
                         /* increment the number of commands loaded */
                         SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands++;
@@ -320,7 +320,7 @@ void SC_InitAtsTables(uint16 AtsIndex)
     for (i = 0; i < SC_MAX_ATS_CMDS; i++)
     {
         SC_AppData.AtsCmdIndexBuffer[AtsIndex][i]    = SC_ERROR;
-        SC_OperData.AtsCmdStatusTblAddr[AtsIndex][i] = SC_EMPTY;
+        SC_OperData.AtsCmdStatusTblAddr[AtsIndex][i] = SC_STATUS_EMPTY;
         SC_AppData.AtsTimeIndexBuffer[AtsIndex][i]   = SC_INVALID_CMD_NUMBER;
     }
 
@@ -340,7 +340,7 @@ void SC_LoadRts(uint16 RtsIndex)
     if (RtsIndex < SC_NUMBER_OF_RTS)
     {
         /* Clear out the RTS info table */
-        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus       = SC_LOADED;
+        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus       = SC_STATUS_LOADED;
         SC_OperData.RtsInfoTblAddr[RtsIndex].UseCtr          = 0;
         SC_OperData.RtsInfoTblAddr[RtsIndex].CmdCtr          = 0;
         SC_OperData.RtsInfoTblAddr[RtsIndex].CmdErrCtr       = 0;
@@ -632,14 +632,14 @@ void SC_ProcessAppend(uint16 AtsIndex)
         CmdIndex = SC_ATS_CMD_NUM_TO_INDEX(EntryPtr->Header.CmdNumber);
 
         /* count only new commands, not replaced commands */
-        if (SC_OperData.AtsCmdStatusTblAddr[AtsIndex][CmdIndex] == SC_EMPTY)
+        if (SC_OperData.AtsCmdStatusTblAddr[AtsIndex][CmdIndex] == SC_STATUS_EMPTY)
         {
             SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands++;
         }
 
         /* update array of pointers to ats entries */
         SC_AppData.AtsCmdIndexBuffer[AtsIndex][CmdIndex]    = EntryIndex;
-        SC_OperData.AtsCmdStatusTblAddr[AtsIndex][CmdIndex] = SC_LOADED;
+        SC_OperData.AtsCmdStatusTblAddr[AtsIndex][CmdIndex] = SC_STATUS_LOADED;
 
         /* update entry index to point to the next entry */
         CFE_MSG_GetSize(&EntryPtr->Msg, &CommandBytes);
@@ -651,7 +651,7 @@ void SC_ProcessAppend(uint16 AtsIndex)
     SC_BuildTimeIndexTable(AtsIndex);
 
     /* did we just append to an ats that was executing? */
-    if ((SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING) &&
+    if ((SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING) &&
         (SC_OperData.AtsCtrlBlckAddr->AtsNumber == (SC_ATS_INDEX_TO_NUM(AtsIndex))))
     {
         /*
@@ -661,7 +661,7 @@ void SC_ProcessAppend(uint16 AtsIndex)
         */
         if (SC_BeginAts(AtsIndex, 0))
         {
-            SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+            SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
         }
     }
 

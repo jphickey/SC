@@ -38,6 +38,10 @@
 
 #include "cfe_tbl_msg.h"
 
+#ifdef CFE_EDS_ENABLED_BUILD
+#include "sc_eds_typedefs.h"
+#else
+
 /************************************************************************
  * Macro Definitions
  ************************************************************************/
@@ -388,5 +392,7 @@ typedef struct
 } SC_EnableRtsGrpCmd_t;
 
 /**\}*/
+
+#endif
 
 #endif

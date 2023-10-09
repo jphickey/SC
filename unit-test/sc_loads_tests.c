@@ -51,7 +51,7 @@ int32 SC_LOADS_TEST_CFE_MSG_GetSizeHook1(void *UserObj, int32 StubRetcode, uint3
     SC_LOADS_TEST_GetTotalMsgLengthHook_RunCount += 1;
 
     if (SC_LOADS_TEST_GetTotalMsgLengthHook_RunCount == 1)
-        SC_OperData.AtsCmdStatusTblAddr[0][1] = SC_LOADED;
+        SC_OperData.AtsCmdStatusTblAddr[0][1] = SC_STATUS_LOADED;
 
     return CFE_SUCCESS;
 }
@@ -72,7 +72,7 @@ void SC_LoadAts_Test_Nominal(void)
     Entry            = (SC_AtsEntryHeader_t *)&SC_OperData.AtsTblAddr[AtsIndex][0];
     Entry->CmdNumber = 1;
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_EMPTY;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_STATUS_EMPTY;
 
     /* Set to satisfy the conditions of if-statement below comment "if the length of the command is valid", along
      * with the if-statement immediately after */
@@ -84,7 +84,7 @@ void SC_LoadAts_Test_Nominal(void)
 
     /* Verify results */
     UtAssert_INT32_EQ(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0], 0);
-    UtAssert_UINT32_EQ(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0], SC_LOADED);
+    UtAssert_UINT32_EQ(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0], SC_STATUS_LOADED);
     UtAssert_UINT32_EQ(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands, 1);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
@@ -120,8 +120,8 @@ void SC_LoadAts_Test_CmdRunOffEndOfBuffer(void)
     /* Verify results */
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR,
                   "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].AtsSize == 0,
@@ -149,8 +149,8 @@ void SC_LoadAts_Test_CmdLengthInvalid(void)
     /* Verify results */
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR,
                   "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].AtsSize == 0,
@@ -178,8 +178,8 @@ void SC_LoadAts_Test_CmdLengthZero(void)
     /* Verify results */
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR,
                   "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].AtsSize == 0,
@@ -207,8 +207,8 @@ void SC_LoadAts_Test_CmdNumberInvalid(void)
     /* Verify results */
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR,
                   "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].AtsSize == 0,
@@ -236,8 +236,8 @@ void SC_LoadAts_Test_EndOfLoadReached(void)
     /* Verify results */
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR,
                   "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].AtsSize == 0,
@@ -289,8 +289,8 @@ void SC_LoadAts_Test_AtsBufferTooSmall(void)
     /* Verify results */
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR,
                   "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == SC_ERROR");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_EMPTY");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_EMPTY");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0");
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].AtsSize == 0,
@@ -399,7 +399,7 @@ void SC_LoadAts_Test_CmdNotEmpty(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    /* This hook will set CmdNumber 2 SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] from SC_EMPTY to SC_LOADED */
+    /* This hook will set CmdNumber 2 SC_OperData.AtsCmdStatusTblAddr[AtsIndex][1] from SC_STATUS_EMPTY to SC_STATUS_LOADED */
     SC_LOADS_TEST_GetTotalMsgLengthHook_RunCount = 0;
     UT_SetHookFunction(UT_KEY(CFE_MSG_GetSize), SC_LOADS_TEST_CFE_MSG_GetSizeHook1, NULL);
 
@@ -408,7 +408,7 @@ void SC_LoadAts_Test_CmdNotEmpty(void)
 
     /* Verify results */
     UtAssert_UINT32_EQ(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0], SC_ERROR);
-    UtAssert_UINT32_EQ(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0], SC_EMPTY);
+    UtAssert_UINT32_EQ(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0], SC_STATUS_EMPTY);
     UtAssert_UINT32_EQ(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands, 0);
     UtAssert_UINT32_EQ(SC_OperData.AtsInfoTblAddr[AtsIndex].AtsSize, 0);
 
@@ -1124,8 +1124,8 @@ void SC_ProcessAppend_Test(void)
 
     SC_AppData.AtsCmdIndexBuffer[0][0] = 0;
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_EMPTY;
-    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_EXECUTING;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_STATUS_EMPTY;
+    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_STATUS_EXECUTING;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber       = 1;
 
     MsgSize = SC_PACKET_MIN_SIZE;
@@ -1144,10 +1144,10 @@ void SC_ProcessAppend_Test(void)
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 1,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 1");
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0, "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED");
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
-                  "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING,
+                  "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
@@ -1169,8 +1169,8 @@ void SC_ProcessAppend_Test_CmdLoaded(void)
 
     SC_AppData.AtsCmdIndexBuffer[0][0] = 0;
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_LOADED;
-    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_EXECUTING;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_STATUS_LOADED;
+    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_STATUS_EXECUTING;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber       = 1;
 
     MsgSize = SC_PACKET_MIN_SIZE;
@@ -1186,8 +1186,8 @@ void SC_ProcessAppend_Test_CmdLoaded(void)
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 0");
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0, "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
                   "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING");
 
@@ -1211,8 +1211,8 @@ void SC_ProcessAppend_Test_NotExecuting(void)
 
     SC_AppData.AtsCmdIndexBuffer[0][0] = 0;
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_EMPTY;
-    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_IDLE;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_STATUS_EMPTY;
+    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_STATUS_IDLE;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber       = 1;
 
     MsgSize = SC_PACKET_MIN_SIZE;
@@ -1228,9 +1228,9 @@ void SC_ProcessAppend_Test_NotExecuting(void)
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 1,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 1");
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0, "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED");
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_IDLE, "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_IDLE");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_IDLE, "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_IDLE");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
@@ -1252,7 +1252,7 @@ void SC_ProcessAppend_Test_AtsNumber(void)
 
     SC_AppData.AtsCmdIndexBuffer[0][0] = 0;
 
-    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_EMPTY;
+    SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_STATUS_EMPTY;
     SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_EXECUTING;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber       = 0;
 
@@ -1269,8 +1269,8 @@ void SC_ProcessAppend_Test_AtsNumber(void)
     UtAssert_True(SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 1,
                   "SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands == 1");
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0, "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0");
-    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED,
-                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_LOADED");
+    UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED,
+                  "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED");
     UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
                   "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING");
 
