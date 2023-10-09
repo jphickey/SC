@@ -61,7 +61,7 @@ void SC_StartAtsCmd(const SC_StartAtsCmd_t *Cmd)
         AtsIndex = SC_ATS_ID_TO_INDEX(AtsId);
 
         /* make sure that there is no ATS running on the ATP */
-        if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_IDLE)
+        if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_IDLE)
         {
             /* make sure the specified ATS is ready */
             if (SC_OperData.AtsInfoTblAddr[AtsIndex].NumberOfCommands > 0)
@@ -70,7 +70,7 @@ void SC_StartAtsCmd(const SC_StartAtsCmd_t *Cmd)
                 if (SC_BeginAts(AtsIndex, 0))
                 {
                     /* finish the ATP control block .. */
-                    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+                    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
                     /* increment the command request counter */
                     SC_OperData.HkPacket.Payload.CmdCtr++;

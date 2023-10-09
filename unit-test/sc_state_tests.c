@@ -57,7 +57,7 @@ int32 SC_STATE_TEST_CFE_SB_GetTotalMsgLengthHook(void *UserObj, int32 StubRetcod
 
 void SC_GetNextRtsTime_Test_Nominal(void)
 {
-    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_STATUS_EXECUTING;
     SC_OperData.RtsInfoTblAddr[0].NextCommandTime = SC_MAX_TIME;
 
     /* Execute the function being tested */
@@ -92,7 +92,7 @@ void SC_GetNextRtsTime_Test_InvalidRtsNumber(void)
 
 void SC_GetNextRtsTime_Test_RtsPriority(void)
 {
-    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_STATUS_EXECUTING;
     SC_OperData.RtsInfoTblAddr[0].NextCommandTime = SC_MAX_TIME;
 
     SC_OperData.RtsInfoTblAddr[1].RtsStatus       = SC_STATUS_EXECUTING;
@@ -110,7 +110,7 @@ void SC_GetNextRtsTime_Test_RtsPriority(void)
 
 void SC_UpdateNextTime_Test_Atp(void)
 {
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_UpdateNextTime());
@@ -123,7 +123,7 @@ void SC_UpdateNextTime_Test_Atp(void)
 
 void SC_UpdateNextTime_Test_Atp2(void)
 {
-    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_STATUS_EXECUTING;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber = SC_NUMBER_OF_RTS + 1;
     SC_AppData.NextCmdTime[SC_RTP]         = 0;
     SC_AppData.NextCmdTime[SC_ATP]         = 10;
@@ -556,7 +556,7 @@ void SC_GetNextAtsCommand_Test_Starting(void)
 
 void SC_GetNextAtsCommand_Test_Idle(void)
 {
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_IDLE;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_IDLE;
 
     /* Execute the function being tested */
     /* NOTE: Calling SC_ProcessRtpCommand instead of SC_GetNextRtsCommand - SC_ProcessRtpCommand calls

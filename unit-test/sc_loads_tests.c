@@ -1188,8 +1188,8 @@ void SC_ProcessAppend_Test_CmdLoaded(void)
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0, "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0");
     UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED,
                   "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED");
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
-                  "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING,
+                  "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
@@ -1253,7 +1253,7 @@ void SC_ProcessAppend_Test_AtsNumber(void)
     SC_AppData.AtsCmdIndexBuffer[0][0] = 0;
 
     SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] = SC_STATUS_EMPTY;
-    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState        = SC_STATUS_EXECUTING;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber       = 0;
 
     MsgSize = SC_PACKET_MIN_SIZE;
@@ -1271,8 +1271,8 @@ void SC_ProcessAppend_Test_AtsNumber(void)
     UtAssert_True(SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0, "SC_AppData.AtsCmdIndexBuffer[AtsIndex][0] == 0");
     UtAssert_True(SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED,
                   "SC_OperData.AtsCmdStatusTblAddr[AtsIndex][0] == SC_STATUS_LOADED");
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
-                  "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING,
+                  "SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }

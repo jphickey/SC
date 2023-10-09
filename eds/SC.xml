@@ -52,34 +52,19 @@
       <EnumeratedDataType name="STATUS">
           <EnumerationList>
             <Enumeration label="EMPTY" value="0" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="LOADED" value="1" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="IDLE" value="2" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="EXECUTED" value="3" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="SKIPPED" value="4" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="EXECUTING" value="5" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="FAILED_CHECKSUM" value="6" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="FAILED_DISTRIB" value="7" />
-          </EnumerationList>
-          <EnumerationList>
             <Enumeration label="STARTING" value="8" />
           </EnumerationList>
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
       </EnumeratedDataType>
 
+          <!-- How to assign these values?
       <EnumeratedDataType name="NUMBER">
           <EnumerationList>
             <Enumeration label="OF_ATS" value="12" />
@@ -91,7 +76,6 @@
           <EnumerationList>
             <Enumeration label="ATS_0" value="1" />
           </EnumerationList>
-          <!-- How to assign these values?
           <EnumerationList>
             <Enumeration label="APPEND" value="SC_TBL_ID_ATS_0 + SC_NUMBER_OF_ATS" />
           </EnumerationList>
@@ -113,7 +97,6 @@
           <EnumerationList>
             <Enumeration label="ATS_CMD_0" value="SC_TBL_ID_ATP_CTRL + 1)" />
           </EnumerationList>
-        -->
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
       </EnumeratedDataType>
 
@@ -123,6 +106,7 @@
           </EnumerationList>
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
       </EnumeratedDataType>
+        -->
 
       <IntegerDataType name="StatusBit">
         <IntegerDataEncoding sizeInBits="1" encoding="unsigned" />
@@ -238,12 +222,24 @@
            <Entry name="AtpCmdNumber" type="BASE_TYPES/uint32"  shortDescription="Current command number"   />
            <Entry name="NextRtsTime" type="BASE_TYPES/uint32"  shortDescription="next RTS cmd Absolute Time" />
            <Entry name="NextAtsTime" type="BASE_TYPES/uint32"  shortDescription="Next ATS Command Time (seconds)" />
-           <Entry name="RtsExecutingStatus" type="RtsStatus"  shortDescription="RTS disabled status bit map where each BASE_TYPES/uint16 represents 16 RTS numbers.  Note: array index numbers and bit numbers use base zero indexing, but RTS numbers use base one indexing.  Thus, the LSB (bit zero) of BASE_TYPES/uint16 array index zero represents RTS number 1, and bit one of BASE_TYPES/uint16 array index zero represents RTS number 2, etc.  If an RTS is ENABLED, then the corresponding bit is zero. If an RTS is DISABLED, then the corresponding bit is one." />
-           <Entry name="RtsDisabledStatus" type="RtsStatus"  shortDescription="RTS executing status bit map where each BASE_TYPES/uint16 represents 16 RTS numbers.  Note: array
-     index numbers and bit numbers use base zero indexing, but RTS numbers use base one indexing.  Thus,
-     the LSB (bit zero) of BASE_TYPES/uint16 array index zero represents RTS number 1, and bit one of BASE_TYPES/uint16 array
-     index zero represents RTS number 2, etc.  If an RTS is IDLE, then the corresponding bit is zero.
-     If an RTS is EXECUTING, then the corresponding bit is one." />
+           <Entry name="RtsExecutingStatus" type="RtsStatus"  shortDescription="RTS disabled status bit map">
+            <LongDescription>
+             Each BASE_TYPES/uint16 represents 16 RTS numbers.
+             Note: array index numbers and bit numbers use base zero indexing, but RTS numbers use base one indexing.
+             Thus, the LSB (bit zero) of BASE_TYPES/uint16 array index zero represents RTS number 1, and bit one of BASE_TYPES/uint16
+             array index zero represents RTS number 2, etc.  If an RTS is ENABLED, then the corresponding bit is zero.
+             If an RTS is DISABLED, then the corresponding bit is one.
+            </LongDescription>
+           </Entry>
+           <Entry name="RtsDisabledStatus" type="RtsStatus"  shortDescription="RTS executing status bit map">
+            <LongDescription>
+             Each BASE_TYPES/uint16 represents 16 RTS numbers.  Note: array
+             index numbers and bit numbers use base zero indexing, but RTS numbers use base one indexing.  Thus,
+             the LSB (bit zero) of BASE_TYPES/uint16 array index zero represents RTS number 1, and bit one of BASE_TYPES/uint16 array
+             index zero represents RTS number 2, etc.  If an RTS is IDLE, then the corresponding bit is zero.
+             If an RTS is EXECUTING, then the corresponding bit is one.
+            </LongDescription>
+           </Entry>
 
         </EntryList>
       </ContainerDataType>
