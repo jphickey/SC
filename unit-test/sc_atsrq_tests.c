@@ -226,7 +226,7 @@ void SC_StartAtsCmd_Test_InUse(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
 }
 
-void SC_StartAtsCmd_Test_InvalidAtsId(void)
+void SC_StartAtsCmd_Test_InvalidAtsNum(void)
 {
     CFE_SB_MsgId_t    TestMsgId = CFE_SB_ValueToMsgId(SC_CMD_MID);
     CFE_MSG_FcnCode_t FcnCode   = SC_START_ATS_CC;
@@ -247,7 +247,7 @@ void SC_StartAtsCmd_Test_InvalidAtsId(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
 }
 
-void SC_StartAtsCmd_Test_InvalidAtsIdZero(void)
+void SC_StartAtsCmd_Test_InvalidAtsNumZero(void)
 {
     CFE_SB_MsgId_t    TestMsgId = CFE_SB_ValueToMsgId(SC_CMD_MID);
     CFE_MSG_FcnCode_t FcnCode   = SC_START_ATS_CC;
@@ -1146,9 +1146,9 @@ void UtTest_Setup(void)
     UtTest_Add(SC_StartAtsCmd_Test_NoCommandsA, SC_Test_Setup, SC_Test_TearDown, "SC_StartAtsCmd_Test_NoCommandsA");
     UtTest_Add(SC_StartAtsCmd_Test_NoCommandsB, SC_Test_Setup, SC_Test_TearDown, "SC_StartAtsCmd_Test_NoCommandsB");
     UtTest_Add(SC_StartAtsCmd_Test_InUse, SC_Test_Setup, SC_Test_TearDown, "SC_StartAtsCmd_Test_InUse");
-    UtTest_Add(SC_StartAtsCmd_Test_InvalidAtsId, SC_Test_Setup, SC_Test_TearDown, "SC_StartAtsCmd_Test_InvalidAtsId");
-    UtTest_Add(SC_StartAtsCmd_Test_InvalidAtsIdZero, SC_Test_Setup, SC_Test_TearDown,
-               "SC_StartAtsCmd_Test_InvalidAtsIdZero");
+    UtTest_Add(SC_StartAtsCmd_Test_InvalidAtsNum, SC_Test_Setup, SC_Test_TearDown, "SC_StartAtsCmd_Test_InvalidAtsNum");
+    UtTest_Add(SC_StartAtsCmd_Test_InvalidAtsNumZero, SC_Test_Setup, SC_Test_TearDown,
+               "SC_StartAtsCmd_Test_InvalidAtsNumZero");
     UtTest_Add(SC_StopAtsCmd_Test_NominalA, SC_Test_Setup, SC_Test_TearDown, "SC_StopAtsCmd_Test_NominalA");
     UtTest_Add(SC_StopAtsCmd_Test_NominalB, SC_Test_Setup, SC_Test_TearDown, "SC_StopAtsCmd_Test_NominalB");
     UtTest_Add(SC_StopAtsCmd_Test_NoRunningAts, SC_Test_Setup, SC_Test_TearDown, "SC_StopAtsCmd_Test_NoRunningAts");
