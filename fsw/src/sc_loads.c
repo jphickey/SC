@@ -44,6 +44,16 @@
  **
  **************************************************************************/
 
+static inline int32 SC_GetAtsDupTest(SC_CommandNum_t CmdId)
+{
+    return SC_OperData.AtsDupTestArray[SC_IDX_AS_UINT(SC_CommandNumToIndex(CmdId))];
+}
+
+static inline void SC_SetAtsDupTest(SC_CommandNum_t CmdId, int32 Val)
+{
+    SC_OperData.AtsDupTestArray[SC_IDX_AS_UINT(SC_CommandNumToIndex(CmdId))] = Val;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Load the ATS from its table to memory                           */
@@ -729,7 +739,7 @@ int32 SC_VerifyAtsTable(uint32 *Buffer32, int32 BufferWords)
     /* Initialize all command numbers as unused */
     for (i = 0; i < SC_MAX_ATS_CMDS; i++)
     {
-        SC_OperData.AtsDupTestArray[i] = SC_DUP_TEST_UNUSED;
+        SC_SetAtsDupTest(SC_CommandIndexToNum(SC_COMMAND_IDX_C(i)), SC_DUP_TEST_UNUSED);
     }
 
     while (StillProcessing)
@@ -861,7 +871,7 @@ int32 SC_VerifyAtsEntry(uint32 *Buffer32, int32 EntryIndex, int32 BufferWords)
                               "Verify ATS Table error: buffer overflow: buf index = %d, cmd num = %u, pkt len = %d",
                               (int)EntryIndex, SC_IDNUM_AS_UINT(EntryPtr->Header.CmdNumber), (int)CommandBytes);
         }
-        else if (SC_OperData.AtsDupTestArray[SC_CommandNumToIndex(EntryPtr->Header.CmdNumber)] != SC_DUP_TEST_UNUSED)
+        else if (SC_GetAtsDupTest(EntryPtr->Header.CmdNumber) != SC_DUP_TEST_UNUSED)
         {
             /* Entry with duplicate command number is invalid */
             Result = SC_ERROR;
@@ -869,7 +879,7 @@ int32 SC_VerifyAtsEntry(uint32 *Buffer32, int32 EntryIndex, int32 BufferWords)
             CFE_EVS_SendEvent(SC_VERIFY_ATS_DUP_ERR_EID, CFE_EVS_EventType_ERROR,
                               "Verify ATS Table error: dup cmd number: buf index = %d, cmd num = %u, dup index = %d",
                               (int)EntryIndex, SC_IDNUM_AS_UINT(EntryPtr->Header.CmdNumber),
-                              (int)SC_OperData.AtsDupTestArray[SC_CommandNumToIndex(EntryPtr->Header.CmdNumber)]);
+                              (int)SC_GetAtsDupTest(EntryPtr->Header.CmdNumber));
         }
         else
         {
@@ -877,7 +887,7 @@ int32 SC_VerifyAtsEntry(uint32 *Buffer32, int32 EntryIndex, int32 BufferWords)
             Result = SC_ATS_HDR_NOPKT_WORDS + CommandWords;
 
             /* Mark this ATS command ID as in use at this table index */
-            SC_OperData.AtsDupTestArray[SC_CommandNumToIndex(EntryPtr->Header.CmdNumber)] = EntryIndex;
+            SC_SetAtsDupTest(EntryPtr->Header.CmdNumber, EntryIndex);
         }
     }
 
