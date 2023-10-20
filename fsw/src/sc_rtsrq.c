@@ -108,7 +108,7 @@ void SC_StartRtsCmd(const SC_StartRtsCmd_t *Cmd)
                     SC_OperData.HkPacket.Payload.RtsActiveCtr++;
                     SC_OperData.HkPacket.Payload.CmdCtr++;
 
-                    if (Cmd->Payload.RtsNum <= SC_LAST_RTS_WITH_EVENTS)
+                    if (SC_RtsNumHasEvent(Cmd->Payload.RtsNum))
                     {
                         CFE_EVS_SendEvent(SC_RTS_START_INF_EID, CFE_EVS_EventType_INFORMATION,
                                           "RTS Number %03u Started", SC_IDNUM_AS_UINT(RtsNum));

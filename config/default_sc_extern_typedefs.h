@@ -38,7 +38,10 @@
  * @note Some code and documentation may also refer to this as an RTS Number.
  * This is synonymous with an RTS ID.
  */
-typedef uint16 SC_RtsNum_t;
+typedef struct
+{
+    uint16 id;
+} SC_RtsNum_t;
 
 /**
  * @brief An identifier for ATS's
@@ -55,7 +58,10 @@ typedef uint16 SC_RtsNum_t;
  * to identify an ATS (e.g. ATS A, ATS B, etc).  This is a simple mapping where
  * A refers to ATS ID 1, B refers to ATS ID 2, etc.
  */
-typedef uint16 SC_AtsNum_t;
+typedef struct
+{
+    uint16 id;
+} SC_AtsNum_t;
 
 /**
  * A command number for ATS's
@@ -77,7 +83,10 @@ typedef uint16 SC_AtsNum_t;
  * defined in the table any order (that is, they may have absolute
  * time stamps that are not in sequence).
  */
-typedef uint16 SC_CommandNum_t;
+typedef struct
+{
+    uint16 id;
+} SC_CommandNum_t;
 
 /**
  * @brief Represents an offset into an ATS or RTS buffer
@@ -92,7 +101,10 @@ typedef uint16 SC_CommandNum_t;
  * @note ATS/RTS Buffers are indexed using 32-bit words.
  * To get a byte offset, this value needs to be multiplied by 4.
  */
-typedef uint16 SC_EntryOffset_t;
+typedef struct
+{
+    uint16 v;
+} SC_EntryOffset_t;
 
 /**
  * Convert from an ID or Number value (e.g. RTS/ATS identifier) to a native unsigned int
@@ -100,7 +112,7 @@ typedef uint16 SC_EntryOffset_t;
  * This is mainly intended for printf()-style logging, where it should be paired
  * with the "%u" conversion specifier.
  */
-#define SC_IDNUM_AS_UINT(arg) ((unsigned int)(arg))
+#define SC_IDNUM_AS_UINT(arg) ((unsigned int)(arg).id)
 
 /**
  * Convert from a native integer value (e.g. a literal) to an ID or Number value
@@ -108,7 +120,10 @@ typedef uint16 SC_EntryOffset_t;
  * This is mainly intended for initializing values from literals or integers
  * This is the inverse macro of SC_IDNUM_AS_UINT()
  */
-#define SC_IDNUM_FROM_UINT(arg) ((uint16)(arg))
+#define SC_IDNUM_FROM_UINT(arg) \
+    {                           \
+        .id = arg               \
+    }
 
 /* _INITIALIZER macros to be used in static (e.g. table) definitions that need to resolve at compile time */
 #define SC_RTS_NUM_INITIALIZER(i)     SC_IDNUM_FROM_UINT(i)
