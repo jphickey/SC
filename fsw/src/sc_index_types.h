@@ -56,7 +56,10 @@
  *
  * The valid range is [0..SC_NUMBER_OF_RTS-1]
  */
-typedef uint16 SC_RtsIndex_t;
+typedef struct
+{
+    uint16 v;
+} SC_RtsIndex_t;
 
 /**
  * @brief An index type for ATS's.
@@ -66,7 +69,10 @@ typedef uint16 SC_RtsIndex_t;
  *
  * The valid range is [0..SC_NUMBER_OF_ATS-1]
  */
-typedef uint16 SC_AtsIndex_t;
+typedef struct
+{
+    uint16 v;
+} SC_AtsIndex_t;
 
 /**
  * @brief An index type for ATS commands.
@@ -76,7 +82,10 @@ typedef uint16 SC_AtsIndex_t;
  *
  * The valid range is [0..SC_MAX_ATS_CMDS-1]
  */
-typedef uint16 SC_CommandIndex_t;
+typedef struct
+{
+    uint16 v;
+} SC_CommandIndex_t;
 
 /**
  * @brief A sequence number for commands.
@@ -93,7 +102,10 @@ typedef uint16 SC_CommandIndex_t;
  *
  * The valid range is [0..SC_MAX_ATS_CMDS-1]
  */
-typedef uint16 SC_SeqIndex_t;
+typedef struct
+{
+    uint16 v;
+} SC_SeqIndex_t;
 
 /*
  * ------------------------------------------------
@@ -116,7 +128,7 @@ typedef uint16 SC_SeqIndex_t;
  * This is mainly intended for printf()-style logging, where it should be paired
  * with the "%u" conversion specifier.
  */
-#define SC_IDX_AS_UINT(arg) ((unsigned int)(arg))
+#define SC_IDX_AS_UINT(arg) ((unsigned int)(arg).v)
 
 /**
  * Convert a native integer to an index value
@@ -124,18 +136,22 @@ typedef uint16 SC_SeqIndex_t;
  * This is mainly intended for initializing values from literals or integers
  * This is the inverse macro of SC_IDX_AS_UINT()
  */
-#define SC_IDX_FROM_UINT(arg) ((uint16)(arg))
+#define SC_IDX_FROM_UINT(arg) \
+    {                         \
+        .v = arg              \
+    }
+
 /**
  * Increment an index value
  * This works with any index type that follows the pattern
  */
-#define SC_IDX_INCREMENT(arg) (++(arg))
+#define SC_IDX_INCREMENT(arg) (++(arg).v)
 
 /**
  * Decrements an index value
  * This works with any index type that follows the pattern
  */
-#define SC_IDX_DECREMENT(arg) (--(arg))
+#define SC_IDX_DECREMENT(arg) (--(arg).v)
 
 /**
  * Convert an index value to a alphabetic character

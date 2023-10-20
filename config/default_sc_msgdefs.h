@@ -42,18 +42,29 @@
  */
 enum SC_Status
 {
-    SC_Status_EMPTY,           /**< \brief the object is not loaded */
-    SC_Status_LOADED,          /**< \brief the object is loaded */
-    SC_Status_IDLE,            /**< \brief the object is not executing */
-    SC_Status_EXECUTED,        /**< \brief the object has completed executing */
-    SC_Status_SKIPPED,         /**< \brief the object (ats command) was skipped */
-    SC_Status_EXECUTING,       /**< \brief the object is currently executing */
-    SC_Status_FAILED_CHECKSUM, /**< \brief the object failed a checksum test */
-    SC_Status_FAILED_DISTRIB,  /**< \brief the object could not be sent on the SWB */
-    SC_Status_STARTING         /**< \brief used when an inline switch is executed */
+    SC_StatusV_EMPTY,           /**< \brief the object is not loaded */
+    SC_StatusV_LOADED,          /**< \brief the object is loaded */
+    SC_StatusV_IDLE,            /**< \brief the object is not executing */
+    SC_StatusV_EXECUTED,        /**< \brief the object has completed executing */
+    SC_StatusV_SKIPPED,         /**< \brief the object (ats command) was skipped */
+    SC_StatusV_EXECUTING,       /**< \brief the object is currently executing */
+    SC_StatusV_FAILED_CHECKSUM, /**< \brief the object failed a checksum test */
+    SC_StatusV_FAILED_DISTRIB,  /**< \brief the object could not be sent on the SWB */
+    SC_StatusV_STARTING         /**< \brief used when an inline switch is executed */
 };
 
-typedef uint8 SC_Status_Enum_t;
+#define SC_Status_EMPTY           ((SC_Status_Enum_t)SC_StatusV_EMPTY)
+#define SC_Status_LOADED          ((SC_Status_Enum_t)SC_StatusV_LOADED)
+#define SC_Status_IDLE            ((SC_Status_Enum_t)SC_StatusV_IDLE)
+#define SC_Status_EXECUTED        ((SC_Status_Enum_t)SC_StatusV_EXECUTED)
+#define SC_Status_SKIPPED         ((SC_Status_Enum_t)SC_StatusV_SKIPPED)
+#define SC_Status_EXECUTING       ((SC_Status_Enum_t)SC_StatusV_EXECUTING)
+#define SC_Status_FAILED_CHECKSUM ((SC_Status_Enum_t)SC_StatusV_FAILED_CHECKSUM)
+#define SC_Status_FAILED_DISTRIB  ((SC_Status_Enum_t)SC_StatusV_FAILED_DISTRIB)
+#define SC_Status_STARTING        ((SC_Status_Enum_t)SC_StatusV_STARTING)
+
+struct SC_Status_Enum;
+typedef struct SC_Status_Enum *SC_Status_Enum_t;
 
 #ifndef SC_OMIT_DEPRECATED
 /**
@@ -158,11 +169,15 @@ typedef uint8 SC_TimeRef_Enum_t;
  */
 enum SC_AtsCont
 {
-    SC_AtsCont_FALSE = false, /**< \brief Do not continue on failure */
-    SC_AtsCont_TRUE  = true   /**< \brief Continue on failure */
+    SC_AtsContV_FALSE = false, /**< \brief Do not continue on failure */
+    SC_AtsContV_TRUE  = true   /**< \brief Continue on failure */
 };
 
-typedef uint8 SC_AtsCont_Enum_t;
+#define SC_AtsCont_TRUE  ((SC_AtsCont_Enum_t)SC_AtsContV_TRUE)
+#define SC_AtsCont_FALSE ((SC_AtsCont_Enum_t)SC_AtsContV_FALSE)
+
+struct AtsCont;
+typedef struct AtsCont *SC_AtsCont_Enum_t;
 
 #ifndef SC_OMIT_DEPRECATED
 /**
