@@ -18,11 +18,20 @@
  ************************************************************************/
 /**
  * @file
- *   This file contains the platform configuration parameters used by
- *   Stored Command
+ *   CFS Stored Command (SC) Application Private Config Definitions
+ *
+ * This provides default values for configurable items that are internal
+ * to this module and do NOT affect the interface(s) of this module.  Changes
+ * to items in this file only affect the local module and will be transparent
+ * to external entities that are using the public interface(s).
+ *
+ * @note This file may be overridden/superceded by mission-provided defintions
+ * either by overriding this header or by generating definitions from a command/data
+ * dictionary tool.
  */
-#ifndef SC_PLATFORM_CFG_H
-#define SC_PLATFORM_CFG_H
+#ifndef SC_INTERNAL_CFG_H
+#define SC_INTERNAL_CFG_H
+
 /**
  * \defgroup cfsscplatformcfg CFS Stored Command Platform Configuration
  * \{
@@ -76,20 +85,6 @@
 #define SC_MAX_CMDS_PER_SEC 8
 
 /**
- * \brief  Number of RTS's
- *
- *  \par Description:
- *       The number of RTS's allowed in the system
- *
- *  \par Limits:
- *       This parameter can't be larger than 999.This parameter will dicate the size of
- *       The RTS Info Table.
- */
-#ifndef CFE_EDS_ENABLED_BUILD
-
-#define SC_NUMBER_OF_RTS 64
-
-/**
  * \brief Max buffer size for an ATS in uint16s
  *
  *  \par Description:
@@ -98,8 +93,6 @@
  *       This parameter can't be larger than an unsigned 16 bit
  *       integer (65535).
  */
-#endif
-
 #define SC_ATS_BUFF_SIZE 8000
 
 /**
@@ -148,28 +141,6 @@
  */
 #endif
 #define SC_LAST_RTS_WITH_EVENTS 20
-
-/**
- * \brief Minimum Packet Size
- *
- *  \par Description:
- *       This parameter specifies the minumum size in bytes for an ATS or RTS command.
- *  \par Limits:
- *       This parameter must be greater than or equal to CFE_SB_CMD_HDR_SIZE and
- *       less than or equal to CFE_MISSION_SB_MAX_SB_MSG_SIZE.
- */
-#define SC_PACKET_MIN_SIZE 8
-
-/**
- * \brief Maximum Packet Size
- *
- *  \par Description:
- *       This parameter specifies the maximum size in bytes for an ATS or RTS command.
- *  \par Limits:
- *       This parameter must be greater than or equal to SC_PACKET_MIN_SIZE and
- *       less than or equal to CFE_MISSION_SB_MAX_SB_MSG_SIZE.
- */
-#define SC_PACKET_MAX_SIZE 256
 
 /**
  * \brief Command Pipe Depth
@@ -357,16 +328,16 @@
 #define SC_ATS_CMD_STAT_TABLE_NAME "ATSCMD_TBL"
 
 /**
- * \brief Defnies default state of Continue-Ats-On-Checksum-Failure Flag
+ * \brief Defines default state of Continue-Ats-On-Checksum-Failure Flag
  *
  *  \par Description:
  *       This parameter specifies the default state to continue an ATS
  *       when a command in the ATS fails checksum validation
  *
  *  \par Limits:
- *       Must be true or false
+ *       Must be SC_AtsCont_TRUE or SC_AtsCont_FALSE
  */
-#define SC_CONT_ON_FAILURE_START true
+#define SC_CONT_ON_FAILURE_START SC_AtsCont_TRUE
 
 /**
  * \brief Defines the TIME SC should use for its commands
@@ -375,8 +346,32 @@
  *       This parameter defines what type of time SC should use for sending uot its commands
  *
  *  \par Limits:
- *       Must be SC_USE_CFE_TIME, SC_USE_TAI, or SC_USE_UTC */
-#define SC_TIME_TO_USE SC_USE_CFE_TIME
+ *       Must be SC_TimeRef_USE_CFE_TIME, SC_TimeRef_USE_TAI, or SC_TimeRef_USE_UTC */
+#define SC_TIME_TO_USE SC_TimeRef_USE_CFE_TIME
+
+/**
+ * \brief Autostart RTS ID after power on
+ *
+ * \par Description:
+ *      The specified RTS will be automatically invoked after a power-on
+ *      May be configured as 0 to disable
+ *
+ * \par Limits:
+ *       Must be a valid RTS ID or 0
+ */
+#define RTS_ID_AUTO_POWER_ON 1
+
+/**
+ * \brief Autostart RTS ID after processor reset
+ *
+ * \par Description:
+ *      The specified RTS will be automatically invoked after a processor reset
+ *      May be configured as 0 to disable
+ *
+ * \par Limits:
+ *       Must be a valid RTS ID or 0
+ */
+#define RTS_ID_AUTO_PROCESSOR 2
 
 /**
  * \brief Mission specific version number for SC application

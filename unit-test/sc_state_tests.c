@@ -21,7 +21,6 @@
  * Includes
  */
 
-#include "sc_rts.h"
 #include "sc_app.h"
 #include "sc_cmds.h"
 #include "sc_state.h"
@@ -57,7 +56,7 @@ int32 SC_STATE_TEST_CFE_SB_GetTotalMsgLengthHook(void *UserObj, int32 StubRetcod
 
 void SC_GetNextRtsTime_Test_Nominal(void)
 {
-    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_Status_EXECUTING;
     SC_OperData.RtsInfoTblAddr[0].NextCommandTime = SC_MAX_TIME;
 
     /* Execute the function being tested */
@@ -85,17 +84,18 @@ void SC_GetNextRtsTime_Test_InvalidRtsNumber(void)
     /* Verify results */
     UtAssert_True(SC_OperData.RtsCtrlBlckAddr->RtsNumber == SC_INVALID_RTS_NUMBER,
                   "SC_OperData.RtsCtrlBlckAddr->RtsNumber == SC_INVALID_RTS_NUMBER");
-    UtAssert_True(SC_AppData.NextCmdTime[SC_RTP] == SC_MAX_TIME, "SC_AppData.NextCmdTime[SC_RTP] == SC_MAX_TIME");
+    UtAssert_True(SC_AppData.NextCmdTime[SC_Process_RTP] == SC_MAX_TIME,
+                  "SC_AppData.NextCmdTime[SC_Process_RTP] == SC_MAX_TIME");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 void SC_GetNextRtsTime_Test_RtsPriority(void)
 {
-    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_Status_EXECUTING;
     SC_OperData.RtsInfoTblAddr[0].NextCommandTime = SC_MAX_TIME;
 
-    SC_OperData.RtsInfoTblAddr[1].RtsStatus       = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[1].RtsStatus       = SC_Status_EXECUTING;
     SC_OperData.RtsInfoTblAddr[1].NextCommandTime = SC_MAX_TIME - 1;
 
     /* Execute the function being tested */
@@ -110,29 +110,29 @@ void SC_GetNextRtsTime_Test_RtsPriority(void)
 
 void SC_UpdateNextTime_Test_Atp(void)
 {
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_Status_EXECUTING;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_UpdateNextTime());
 
     /* Verify results */
-    UtAssert_True(SC_AppData.NextProcNumber == SC_ATP, "SC_AppData.NextProcNumber == SC_ATP");
+    UtAssert_True(SC_AppData.NextProcNumber == SC_Process_ATP, "SC_AppData.NextProcNumber == SC_Process_ATP");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 void SC_UpdateNextTime_Test_Atp2(void)
 {
-    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_EXECUTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_Status_EXECUTING;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber = SC_NUMBER_OF_RTS + 1;
-    SC_AppData.NextCmdTime[SC_RTP]         = 0;
-    SC_AppData.NextCmdTime[SC_ATP]         = 10;
+    SC_AppData.NextCmdTime[SC_Process_RTP] = 0;
+    SC_AppData.NextCmdTime[SC_Process_ATP] = 10;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_UpdateNextTime());
 
     /* Verify results */
-    UtAssert_True(SC_AppData.NextProcNumber == SC_ATP, "SC_AppData.NextProcNumber == SC_ATP");
+    UtAssert_True(SC_AppData.NextProcNumber == SC_Process_ATP, "SC_AppData.NextProcNumber == SC_Process_ATP");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
@@ -140,17 +140,17 @@ void SC_UpdateNextTime_Test_Atp2(void)
 void SC_UpdateNextTime_Test_Rtp(void)
 {
     SC_OperData.RtsCtrlBlckAddr->RtsNumber = 10;
-    SC_AppData.NextCmdTime[SC_RTP]         = 0;
-    SC_AppData.NextCmdTime[SC_ATP]         = 10;
+    SC_AppData.NextCmdTime[SC_Process_RTP] = 0;
+    SC_AppData.NextCmdTime[SC_Process_ATP] = 10;
 
-    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[0].RtsStatus       = SC_Status_EXECUTING;
     SC_OperData.RtsInfoTblAddr[0].NextCommandTime = 1;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_UpdateNextTime());
 
     /* Verify results */
-    UtAssert_True(SC_AppData.NextProcNumber == SC_RTP, "SC_AppData.NextProcNumber == SC_RTP");
+    UtAssert_True(SC_AppData.NextProcNumber == SC_Process_RTP, "SC_AppData.NextProcNumber == SC_Process_RTP");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
@@ -158,10 +158,10 @@ void SC_UpdateNextTime_Test_Rtp(void)
 void SC_UpdateNextTime_Test_RtpAtpPriority(void)
 {
     SC_OperData.RtsCtrlBlckAddr->RtsNumber = 0;
-    SC_AppData.NextCmdTime[SC_RTP]         = 0;
-    SC_AppData.NextCmdTime[SC_ATP]         = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP] = 0;
+    SC_AppData.NextCmdTime[SC_Process_ATP] = 0;
 
-    SC_OperData.RtsInfoTblAddr[SC_NUMBER_OF_RTS - 1].RtsStatus       = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_NUMBER_OF_RTS - 1].RtsStatus       = SC_Status_EXECUTING;
     SC_OperData.RtsInfoTblAddr[SC_NUMBER_OF_RTS - 1].NextCommandTime = 1;
 
     /* Execute the function being tested */
@@ -175,11 +175,11 @@ void SC_GetNextRtsCommand_Test_GetNextCommand(void)
 {
     size_t MsgSize;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands                                   = 1;
 
     /* Give the packet the minimum possible size, to ensure that (CmdOffset < SC_RTS_HDR_WORDS) is met */
@@ -216,11 +216,11 @@ void SC_GetNextRtsCommand_Test_RtsNumberMax(void)
 {
     size_t MsgSize;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = SC_NUMBER_OF_RTS;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands                                   = 1;
 
     /* Give the packet the minimum possible size, to ensure that (CmdOffset < SC_RTS_HDR_WORDS) is met */
@@ -243,9 +243,9 @@ void SC_GetNextRtsCommand_Test_RtsNumberOverMax(void)
 {
     size_t MsgSize;
 
-    SC_AppData.NextCmdTime[SC_RTP]                 = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]         = 0;
     SC_AppData.CurrentTime                         = 1;
-    SC_AppData.NextProcNumber                      = SC_RTP;
+    SC_AppData.NextProcNumber                      = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber         = SC_NUMBER_OF_RTS + 1;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands = 1;
 
@@ -269,11 +269,11 @@ void SC_GetNextRtsCommand_Test_RtsNotExecuting(void)
 {
     size_t MsgSize;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = SC_NUMBER_OF_RTS;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_IDLE;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_IDLE;
     SC_OperData.AtsInfoTblAddr[1].NumberOfCommands                                   = 1;
 
     /* Give the packet the minimum possible size, to ensure that (CmdOffset < SC_RTS_HDR_WORDS) is met */
@@ -298,11 +298,11 @@ void SC_GetNextRtsCommand_Test_RtsLengthError(void)
     size_t               MsgSize1;
     size_t               MsgSize2;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
 
     Entry = (SC_RtsEntryHeader_t *)&SC_OperData.RtsTblAddr[0][0];
 
@@ -347,11 +347,11 @@ void SC_GetNextRtsCommand_Test_CommandLengthError(void)
     size_t               MsgSize1;
     size_t               MsgSize2;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
 
     Entry = (SC_RtsEntryHeader_t *)&SC_OperData.RtsTblAddr[0][0];
 
@@ -396,11 +396,11 @@ void SC_GetNextRtsCommand_Test_ZeroCommandLength(void)
     size_t               MsgSize1;
     size_t               MsgSize2;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = SC_LAST_RTS_WITH_EVENTS;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
 
     Entry = (SC_RtsEntryHeader_t *)&SC_OperData.RtsTblAddr[SC_LAST_RTS_WITH_EVENTS - 1][0];
 
@@ -435,11 +435,11 @@ void SC_GetNextRtsCommand_Test_ZeroCommandLengthLastRts(void)
     size_t               MsgSize1;
     size_t               MsgSize2;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = SC_LAST_RTS_WITH_EVENTS + 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
 
     Entry = (SC_RtsEntryHeader_t *)&SC_OperData.RtsTblAddr[SC_LAST_RTS_WITH_EVENTS][0];
 
@@ -472,11 +472,11 @@ void SC_GetNextRtsCommand_Test_EndOfBuffer(void)
     SC_RtsEntryHeader_t *Entry;
     size_t               MsgSize;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
 
     Entry = (SC_RtsEntryHeader_t *)&SC_OperData.RtsTblAddr[0][0];
 
@@ -508,11 +508,11 @@ void SC_GetNextRtsCommand_Test_EndOfBufferLastRts(void)
     SC_RtsEntryHeader_t *Entry;
     size_t               MsgSize;
 
-    SC_AppData.NextCmdTime[SC_RTP]                                                   = 0;
+    SC_AppData.NextCmdTime[SC_Process_RTP]                                           = 0;
     SC_AppData.CurrentTime                                                           = 1;
-    SC_AppData.NextProcNumber                                                        = SC_RTP;
+    SC_AppData.NextProcNumber                                                        = SC_Process_RTP;
     SC_OperData.RtsCtrlBlckAddr->RtsNumber                                           = SC_LAST_RTS_WITH_EVENTS + 1;
-    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_EXECUTING;
+    SC_OperData.RtsInfoTblAddr[SC_OperData.RtsCtrlBlckAddr->RtsNumber - 1].RtsStatus = SC_Status_EXECUTING;
 
     Entry = (SC_RtsEntryHeader_t *)&SC_OperData.RtsTblAddr[SC_LAST_RTS_WITH_EVENTS][0];
 
@@ -540,7 +540,7 @@ void SC_GetNextRtsCommand_Test_EndOfBufferLastRts(void)
 
 void SC_GetNextAtsCommand_Test_Starting(void)
 {
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STARTING;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_Status_STARTING;
 
     /* Execute the function being tested */
     /* NOTE: Calling SC_ProcessRtpCommand instead of SC_GetNextRtsCommand - SC_ProcessRtpCommand calls
@@ -548,15 +548,15 @@ void SC_GetNextAtsCommand_Test_Starting(void)
     UtAssert_VOIDCALL(SC_GetNextAtsCommand());
 
     /* Verify results */
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING,
-                  "SC_OperData.AtsCtrlBlckAddr -> AtpState == SC_EXECUTING");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_Status_EXECUTING,
+                  "SC_OperData.AtsCtrlBlckAddr -> AtpState == SC_Status_EXECUTING");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 void SC_GetNextAtsCommand_Test_Idle(void)
 {
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_IDLE;
+    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_Status_IDLE;
 
     /* Execute the function being tested */
     /* NOTE: Calling SC_ProcessRtpCommand instead of SC_GetNextRtsCommand - SC_ProcessRtpCommand calls
@@ -564,8 +564,8 @@ void SC_GetNextAtsCommand_Test_Idle(void)
     UtAssert_VOIDCALL(SC_GetNextAtsCommand());
 
     /* Verify results */
-    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_IDLE,
-                  "SC_OperData.AtsCtrlBlckAddr -> AtpState == SC_IDLE");
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->AtpState == SC_Status_IDLE,
+                  "SC_OperData.AtsCtrlBlckAddr -> AtpState == SC_Status_IDLE");
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
@@ -577,19 +577,19 @@ void SC_GetNextAtsCommand_Test_GetNextCommand(void)
     Entry            = (SC_AtsEntryHeader_t *)&SC_OperData.AtsTblAddr[0][0];
     Entry->CmdNumber = 1;
 
-    SC_AppData.NextCmdTime[SC_ATP]        = 0;
-    SC_AppData.CurrentTime                = 1;
-    SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_AppData.NextCmdTime[SC_Process_ATP] = 0;
+    SC_AppData.CurrentTime                 = 1;
+    SC_AppData.NextProcNumber              = SC_Process_ATP;
+    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_Status_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 1;
     SC_AppData.AtsTimeIndexBuffer[0][0]    = 1;
     SC_AppData.AtsTimeIndexBuffer[0][1]    = 2;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_Status_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
-    SC_OperData.AtsInfoTblAddr[SC_ATP].NumberOfCommands = 100;
+    SC_OperData.AtsInfoTblAddr[SC_Process_ATP].NumberOfCommands = 100;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_GetNextAtsCommand());
@@ -597,7 +597,7 @@ void SC_GetNextAtsCommand_Test_GetNextCommand(void)
     /* Verify results */
     UtAssert_INT32_EQ(SC_OperData.AtsCtrlBlckAddr->TimeIndexPtr, 1);
     UtAssert_INT32_EQ(SC_OperData.AtsCtrlBlckAddr->CmdNumber, SC_AppData.AtsTimeIndexBuffer[0][1]);
-    UtAssert_INT32_EQ(SC_AppData.NextCmdTime[SC_ATP], 0);
+    UtAssert_INT32_EQ(SC_AppData.NextCmdTime[SC_Process_ATP], 0);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
@@ -609,18 +609,18 @@ void SC_GetNextAtsCommand_Test_ExecutionACompleted(void)
     Entry            = (SC_AtsEntryHeader_t *)&SC_OperData.AtsTblAddr[0][0];
     Entry->CmdNumber = 1;
 
-    SC_AppData.NextCmdTime[SC_ATP]        = 0;
-    SC_AppData.CurrentTime                = 1;
-    SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_AppData.NextCmdTime[SC_Process_ATP] = 0;
+    SC_AppData.CurrentTime                 = 1;
+    SC_AppData.NextProcNumber              = SC_Process_ATP;
+    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_Status_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 2;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 0;
 
-    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[0][0] = SC_Status_LOADED;
     SC_AppData.AtsCmdIndexBuffer[0][0]    = 0;
 
-    SC_OperData.AtsInfoTblAddr[SC_ATP].NumberOfCommands = 0;
+    SC_OperData.AtsInfoTblAddr[SC_Process_ATP].NumberOfCommands = 0;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_GetNextAtsCommand());
@@ -637,18 +637,18 @@ void SC_GetNextAtsCommand_Test_ExecutionBCompleted(void)
     Entry            = (SC_AtsEntryHeader_t *)&SC_OperData.AtsTblAddr[0][0];
     Entry->CmdNumber = 1;
 
-    SC_AppData.NextCmdTime[SC_ATP]        = 0;
-    SC_AppData.CurrentTime                = 1;
-    SC_AppData.NextProcNumber             = SC_ATP;
-    SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
+    SC_AppData.NextCmdTime[SC_Process_ATP] = 0;
+    SC_AppData.CurrentTime                 = 1;
+    SC_AppData.NextProcNumber              = SC_Process_ATP;
+    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_Status_EXECUTING;
 
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = 1;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = 0;
 
-    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_LOADED;
+    SC_OperData.AtsCmdStatusTblAddr[1][0] = SC_Status_LOADED;
     SC_AppData.AtsCmdIndexBuffer[1][0]    = 0;
 
-    SC_OperData.AtsInfoTblAddr[SC_ATP].NumberOfCommands = 0;
+    SC_OperData.AtsInfoTblAddr[SC_Process_ATP].NumberOfCommands = 0;
 
     /* Execute the function being tested */
     UtAssert_VOIDCALL(SC_GetNextAtsCommand());

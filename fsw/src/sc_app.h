@@ -35,6 +35,69 @@
 #include "sc_msg.h"
 
 /**
+ * SC time accessor object
+ *
+ * Wrapper structure containing a method to get
+ * the current reference time.  This reference is
+ * used for evaluationg all time references in ATSs
+ * and RTSs.
+ */
+typedef struct SC_TimeAccessor
+{
+    CFE_TIME_SysTime_t (*GetTime)(void);
+} SC_TimeAccessor_t;
+
+/**
+ *  \brief ATP Control Block Type
+ */
+typedef struct
+{
+    uint8  AtpState;       /**< \brief execution state of the ATP */
+    uint8  AtsNumber;      /**< \brief current ATS running if any */
+    uint16 Padding;        /**< \brief Structure padding to align to 32-bit boundaries */
+    uint32 CmdNumber;      /**< \brief current cmd number to run if any */
+    uint16 TimeIndexPtr;   /**< \brief time index pointer for current cmd */
+    uint16 SwitchPendFlag; /**< \brief indicates that a buffer switch is waiting */
+} SC_AtpControlBlock_t;
+
+/**
+ *  \brief ATS Info Table Type - One of these records are kept for each ATS
+ */
+typedef struct
+{
+    uint16 AtsUseCtr;        /**< \brief How many times it has been used */
+    uint16 NumberOfCommands; /**< \brief number of commands in the ATS */
+    uint32 AtsSize;          /**< \brief size of the ATS */
+} SC_AtsInfoTable_t;
+
+/**
+ *  \brief RTP Control Block Type
+ *
+ *  \note Now there is only really one RTP
+ *  This structure contains overall info for the next relative time
+ *  processor.
+ */
+typedef struct
+{
+    uint16 NumRtsActive; /**< \brief number of RTSs currently active */
+    uint16 RtsNumber;    /**< \brief next RTS number */
+} SC_RtpControlBlock_t;
+
+/**
+ *  \brief RTS info table entry type -One of these records is kept for each RTS
+ */
+typedef struct
+{
+    uint8           RtsStatus;       /**< \brief status of the RTS */
+    bool            DisabledFlag;    /**< \brief disabled/enabled flag */
+    uint8           CmdCtr;          /**< \brief Cmds executed in current rts */
+    uint8           CmdErrCtr;       /**< \brief errs in current RTS */
+    SC_AbsTimeTag_t NextCommandTime; /**< \brief next command time for RTS */
+    uint16          NextCommandPtr;  /**< \brief where next rts cmd is */
+    uint16          UseCtr;          /**< \brief how many times RTS is run */
+} SC_RtsInfoEntry_t;
+
+/**
  * \brief Wakeup for SC
  *
  * \par Description
@@ -280,13 +343,16 @@ typedef struct
          These offsets correspond to the addresses of ATS commands located in the ATS table.
          The index used is the ATS command index with values from 0 to SC_MAX_ATS_CMDS-1 */
 
+
+    SC_TimeAccessor_t TimeRef; /**< \brief Configured time reference */
+
     bool EnableHeaderUpdate; /**< \brief whether to update headers in outgoing messages */
 
-    uint8           NextProcNumber;  /**< \brief the next command processor number */
-    SC_AbsTimeTag_t NextCmdTime[2];  /**< \brief The overall next command time  0 - ATP, 1- RTP*/
-    SC_AbsTimeTag_t CurrentTime;     /**< \brief this is the current time for SC */
-    uint16          AutoStartRTS;    /**< \brief Start selected auto-exec RTS after init */
-    uint16          AppendWordCount; /**< \brief Size of cmd entries in current Append ATS table */
+    SC_Process_Enum_t NextProcNumber;  /**< \brief the next command processor number */
+    SC_AbsTimeTag_t   NextCmdTime[2];  /**< \brief The overall next command time  0 - ATP, 1- RTP*/
+    SC_AbsTimeTag_t   CurrentTime;     /**< \brief this is the current time for SC */
+    uint16            AutoStartRTS;    /**< \brief Start selected auto-exec RTS after init */
+    uint16            AppendWordCount; /**< \brief Size of cmd entries in current Append ATS table */
 } SC_AppData_t;
 
 /************************************************************************
