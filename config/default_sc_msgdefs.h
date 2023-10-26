@@ -28,6 +28,7 @@
 #define SC_MSGDEFS_H
 
 #include "common_types.h"
+#include "sc_extern_typedefs.h"
 #include "sc_fcncodes.h"
 
 #ifdef CFE_EDS_ENABLED_BUILD
@@ -45,18 +46,29 @@
  */
 enum SC_Status
 {
-    SC_Status_EMPTY,           /**< \brief the object is not loaded */
-    SC_Status_LOADED,          /**< \brief the object is loaded */
-    SC_Status_IDLE,            /**< \brief the object is not executing */
-    SC_Status_EXECUTED,        /**< \brief the object has completed executing */
-    SC_Status_SKIPPED,         /**< \brief the object (ats command) was skipped */
-    SC_Status_EXECUTING,       /**< \brief the object is currently executing */
-    SC_Status_FAILED_CHECKSUM, /**< \brief the object failed a checksum test */
-    SC_Status_FAILED_DISTRIB,  /**< \brief the object could not be sent on the SWB */
-    SC_Status_STARTING         /**< \brief used when an inline switch is executed */
+    SC_StatusV_EMPTY,           /**< \brief the object is not loaded */
+    SC_StatusV_LOADED,          /**< \brief the object is loaded */
+    SC_StatusV_IDLE,            /**< \brief the object is not executing */
+    SC_StatusV_EXECUTED,        /**< \brief the object has completed executing */
+    SC_StatusV_SKIPPED,         /**< \brief the object (ats command) was skipped */
+    SC_StatusV_EXECUTING,       /**< \brief the object is currently executing */
+    SC_StatusV_FAILED_CHECKSUM, /**< \brief the object failed a checksum test */
+    SC_StatusV_FAILED_DISTRIB,  /**< \brief the object could not be sent on the SWB */
+    SC_StatusV_STARTING         /**< \brief used when an inline switch is executed */
 };
 
-typedef uint8 SC_Status_Enum_t;
+#define SC_Status_EMPTY           ((SC_Status_Enum_t)SC_StatusV_EMPTY)
+#define SC_Status_LOADED          ((SC_Status_Enum_t)SC_StatusV_LOADED)
+#define SC_Status_IDLE            ((SC_Status_Enum_t)SC_StatusV_IDLE)
+#define SC_Status_EXECUTED        ((SC_Status_Enum_t)SC_StatusV_EXECUTED)
+#define SC_Status_SKIPPED         ((SC_Status_Enum_t)SC_StatusV_SKIPPED)
+#define SC_Status_EXECUTING       ((SC_Status_Enum_t)SC_StatusV_EXECUTING)
+#define SC_Status_FAILED_CHECKSUM ((SC_Status_Enum_t)SC_StatusV_FAILED_CHECKSUM)
+#define SC_Status_FAILED_DISTRIB  ((SC_Status_Enum_t)SC_StatusV_FAILED_DISTRIB)
+#define SC_Status_STARTING        ((SC_Status_Enum_t)SC_StatusV_STARTING)
+
+struct SC_Status_Enum;
+typedef struct SC_Status_Enum *SC_Status_Enum_t;
 
 #ifndef SC_OMIT_DEPRECATED
 /**
@@ -161,10 +173,15 @@ typedef uint8 SC_TimeRef_Enum_t;
  */
 enum SC_AtsCont
 {
-    SC_AtsCont_FALSE = false, /**< \brief Do not continue on failure */
-    SC_AtsCont_TRUE  = true   /**< \brief Continue on failure */
+    SC_AtsContV_FALSE = false, /**< \brief Do not continue on failure */
+    SC_AtsContV_TRUE  = true   /**< \brief Continue on failure */
 };
-typedef uint8 SC_AtsCont_Enum_t;
+
+#define SC_AtsCont_TRUE  ((SC_AtsCont_Enum_t)SC_AtsContV_TRUE)
+#define SC_AtsCont_FALSE ((SC_AtsCont_Enum_t)SC_AtsContV_FALSE)
+
+struct AtsCont;
+typedef struct AtsCont *SC_AtsCont_Enum_t;
 
 #ifndef SC_OMIT_DEPRECATED
 /**
@@ -198,28 +215,28 @@ typedef struct
     uint8 CmdCtr;    /**< \brief Counts Ground Requests */
     uint8 Padding8;  /**< \brief Structure padding */
 
-    uint16 SwitchPendFlag;  /**< \brief Switch pending flag: 0 = NO, 1 = YES */
-    uint16 NumRtsActive;    /**< \brief Number of RTSs currently active */
-    uint16 RtsNumber;       /**< \brief Next RTS number */
-    uint16 RtsActiveCtr;    /**< \brief Increments when an RTS is started without error */
-    uint16 RtsActiveErrCtr; /**< \brief Increments when an attempt to start an RTS fails */
-    uint16 AtsCmdCtr;       /**< \brief Total ATS cmd cnter counts commands sent by the ATS */
-    uint16 AtsCmdErrCtr;    /**< \brief Total ATS cmd Error ctr command errors in the ATS */
-    uint16 RtsCmdCtr;       /**< \brief Counts TOTAL rts cmds that were sent out from ALL active RTSs */
-    uint16 RtsCmdErrCtr;    /**< \brief Counts TOTAL number of errs from ALL RTSs that are active */
-    uint16 LastAtsErrSeq;   /**< \brief Last ATS Errant Sequence Num Values: 1 or 2 */
-    uint16 LastAtsErrCmd;   /**< \brief Last ATS Errant Command Num */
-    uint16 LastRtsErrSeq;   /**< \brief Last RTS Errant Sequence Num */
-    uint16 LastRtsErrCmd;   /**< \brief Offset in the RTS buffer for the last command error, in "words" */
+    uint16           SwitchPendFlag;  /**< \brief Switch pending flag: 0 = NO, 1 = YES */
+    uint16           NumRtsActive;    /**< \brief Number of RTSs currently active */
+    SC_RtsNum_t      RtsNum;          /**< \brief Next RTS number */
+    uint16           RtsActiveCtr;    /**< \brief Increments when an RTS is started without error */
+    uint16           RtsActiveErrCtr; /**< \brief Increments when an attempt to start an RTS fails */
+    uint16           AtsCmdCtr;       /**< \brief Total ATS cmd cnter counts commands sent by the ATS */
+    uint16           AtsCmdErrCtr;    /**< \brief Total ATS cmd Error ctr command errors in the ATS */
+    uint16           RtsCmdCtr;       /**< \brief Counts TOTAL rts cmds that were sent out from ALL active RTSs */
+    uint16           RtsCmdErrCtr;    /**< \brief Counts TOTAL number of errs from ALL RTSs that are active */
+    SC_AtsNum_t      LastAtsErrSeq;   /**< \brief Last ATS Errant Sequence Num Values: 1 or 2 */
+    SC_CommandNum_t  LastAtsErrCmd;   /**< \brief Last ATS Errant Command Num */
+    SC_RtsNum_t      LastRtsErrSeq;   /**< \brief Last RTS Errant Sequence Num */
+    SC_EntryOffset_t LastRtsErrCmd;   /**< \brief Offset in the RTS buffer for the last command error, in "words" */
 
-    uint16 AppendCmdArg;                   /**< \brief ATS selection argument from most recent Append ATS command */
-    uint16 AppendEntryCount;               /**< \brief Number of cmd entries in current Append ATS table */
-    uint16 AppendByteCount;                /**< \brief Size of cmd entries in current Append ATS table */
-    uint16 AppendLoadCount;                /**< \brief Total number of Append ATS table loads */
-    uint32 AtpCmdNumber;                   /**< \brief Current command number */
-    uint32 AtpFreeBytes[SC_NUMBER_OF_ATS]; /**< \brief Free Bytes in each ATS  */
-    uint32 NextRtsTime;                    /**< \brief Next RTS cmd Absolute Time */
-    uint32 NextAtsTime;                    /**< \brief Next ATS Command Time (seconds) */
+    SC_AtsNum_t AppendCmdArg;     /**< \brief ATS selection argument from most recent Append ATS command */
+    uint16      AppendEntryCount; /**< \brief Number of cmd entries in current Append ATS table */
+    uint16      AppendByteCount;  /**< \brief Size of cmd entries in current Append ATS table */
+    uint16      AppendLoadCount;  /**< \brief Total number of Append ATS table loads */
+    uint32      AtpCmdNumber;     /**< \brief Current command number */
+    uint32      AtpFreeBytes[SC_NUMBER_OF_ATS]; /**< \brief Free Bytes in each ATS  */
+    uint32      NextRtsTime;                    /**< \brief Next RTS cmd Absolute Time */
+    uint32      NextAtsTime;                    /**< \brief Next ATS Command Time (seconds) */
 
     uint16 RtsExecutingStatus[(SC_NUMBER_OF_RTS + (SC_NUMBER_OF_RTS_IN_UINT16 - 1)) / SC_NUMBER_OF_RTS_IN_UINT16];
     /**< \brief RTS executing status bit map where each uint16 represents 16 RTS numbers.  Note: array
@@ -248,8 +265,8 @@ typedef struct
  */
 typedef struct
 {
-    uint16 AtsId;   /**< \brief The ID of the ATS to start, 1 = ATS_A, 2 = ATS_B */
-    uint16 Padding; /**< \brief Structure padding */
+    SC_AtsNum_t AtsNum;  /**< \brief The ID of the ATS to start, 1 = ATS_A, 2 = ATS_B */
+    uint16      Padding; /**< \brief Structure padding */
 } SC_StartAtsCmd_Payload_t;
 
 /**
@@ -257,8 +274,8 @@ typedef struct
  */
 typedef struct
 {
-    uint16 RtsId;   /**< \brief The ID of the RTS to start, 1 through #SC_NUMBER_OF_RTS */
-    uint16 Padding; /**< \brief Structure padding */
+    SC_RtsNum_t RtsNum;  /**< \brief The ID of the RTS to start, 1 through #SC_NUMBER_OF_RTS */
+    uint16      Padding; /**< \brief Structure padding */
 } SC_RtsCmd_Payload_t;
 
 /**
@@ -283,8 +300,8 @@ typedef struct
  */
 typedef struct
 {
-    uint16 AtsId;   /**< \brief The ID of the ATS to append to, 1 = ATS_A, 2 = ATS_B */
-    uint16 Padding; /**< \brief Structure Padding */
+    SC_AtsNum_t AtsNum;  /**< \brief The ID of the ATS to append to, 1 = ATS_A, 2 = ATS_B */
+    uint16      Padding; /**< \brief Structure Padding */
 } SC_AppendAtsCmd_Payload_t;
 
 /**
@@ -292,8 +309,8 @@ typedef struct
  */
 typedef struct
 {
-    uint16 FirstRtsId; /**< \brief ID of the first RTS to act on, 1 through #SC_NUMBER_OF_RTS */
-    uint16 LastRtsId;  /**< \brief ID of the last RTS to act on, 1 through #SC_NUMBER_OF_RTS */
+    SC_RtsNum_t FirstRtsNum; /**< \brief ID of the first RTS to act on, 1 through #SC_NUMBER_OF_RTS */
+    SC_RtsNum_t LastRtsNum;  /**< \brief ID of the last RTS to act on, 1 through #SC_NUMBER_OF_RTS */
 } SC_RtsGrpCmd_Payload_t;
 
 /**\}*/
