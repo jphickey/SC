@@ -46,51 +46,51 @@
 #define SC_NONE 0xFF /**< \brief No pending process */
 /**\}*/
 
-#define SC_MAX_TIME 0xFFFFFFFF /**< \brief Maximum time in SC */
+#define SC_MAX_TIME        0xFFFFFFFF /**< \brief Maximum time in SC */
 
 /**
  * \name ATS/RTS Cmd Status macros
  * \{
  */
-#define SC_STATUS_EMPTY    0 /**< \brief the object is not loaded */
-#define SC_STATUS_LOADED          1 /**< \brief the object is loaded */
-#define SC_STATUS_IDLE            2 /**< \brief the object is not executing */
-#define SC_STATUS_EXECUTED        3 /**< \brief the object has completed executing */
-#define SC_STATUS_SKIPPED         4 /**< \brief the object (ats command) was skipped */
-#define SC_STATUS_EXECUTING       5 /**< \brief the object is currently executing */
-#define SC_STATUS_FAILED_CHECKSUM 6 /**< \brief the object failed a checksum test */
-#define SC_STATUS_FAILED_DISTRIB  7 /**< \brief the object could not be sent on the SWB */
-#define SC_STATUS_STARTING        8 /**< \brief used when an inline switch is executed */
+#define SC_EMPTY           0          /**< \brief the object is not loaded */
+#define SC_LOADED          1          /**< \brief the object is loaded */
+#define SC_IDLE            2          /**< \brief the object is not executing */
+#define SC_EXECUTED        3          /**< \brief the object has completed executing */
+#define SC_SKIPPED         4          /**< \brief the object (ats command) was skipped */
+#define SC_EXECUTING       5          /**< \brief the object is currently executing */
+#define SC_FAILED_CHECKSUM 6          /**< \brief the object failed a checksum test */
+#define SC_FAILED_DISTRIB  7          /**< \brief the object could not be sent on the SWB */
+#define SC_STARTING        8          /**< \brief used when an inline switch is executed */
 /**\}*/
 
 /**
  * \name Defines for each ATS
  * \{
  */
-#define SC_NO_ATS 0 /**<\ brief No ATS */
-#define SC_ATSA   1 /**< \brief ATS A */
-#define SC_ATSB   2 /**< \brief ATS B */
+#define SC_NO_ATS          0          /**<\ brief No ATS */
+#define SC_ATSA            1          /**< \brief ATS A */
+#define SC_ATSB            2          /**< \brief ATS B */
 /**\}*/
 
 /**
  * \name constants for config parameters for which TIME to use
  * \{
  */
-#define SC_USE_CFE_TIME 0 /**< \brief Use cFE configured time */
-#define SC_USE_TAI      1 /**< \brief Use TAI Time */
-#define SC_USE_UTC      2 /**< \brief USE UTC Time */
+#define SC_USE_CFE_TIME    0          /**< \brief Use cFE configured time */
+#define SC_USE_TAI         1          /**< \brief Use TAI Time */
+#define SC_USE_UTC         2          /**< \brief USE UTC Time */
 /**\}*/
 
 #define SC_INVALID_RTS_NUMBER 0 /**< \brief Invalid RTS number */
 
-#define SC_NUMBER_OF_ATS 2 /**< \brief the number of Absolute Time Sequences */
+#define SC_NUMBER_OF_ATS              2 /**< \brief the number of Absolute Time Sequences */
 
 /**
  * \name SC Continue Flags
  * \{
  */
-#define SC_CONTINUE_TRUE  1 /**< \brief Continue on failure */
-#define SC_CONTINUE_FALSE 0 /**< \brief Do not continue on failure */
+#define SC_CONTINUE_TRUE              1 /**< \brief Continue on failure */
+#define SC_CONTINUE_FALSE             0 /**< \brief Do not continue on failure */
 /**\}*/
 
 /**
@@ -127,7 +127,7 @@
  *
  *  \sa #SC_RESET_COUNTERS_CC
  */
-#define SC_NOOP_CC 0
+#define SC_NOOP_CC                    0
 
 /**
  * \brief Reset Counters
@@ -158,7 +158,7 @@
  *
  *  \sa #SC_NOOP_CC
  */
-#define SC_RESET_COUNTERS_CC 1
+#define SC_RESET_COUNTERS_CC          1
 
 /**
  * \brief Start an ATS
@@ -191,7 +191,7 @@
  *
  *  \sa #SC_STOP_ATS_CC
  */
-#define SC_START_ATS_CC 2
+#define SC_START_ATS_CC               2
 /**
  * \brief Stop an ATS
  *
@@ -220,7 +220,7 @@
  *
  *  \sa #SC_START_ATS_CC
  */
-#define SC_STOP_ATS_CC 3
+#define SC_STOP_ATS_CC                3
 
 /**
  * \brief Start an RTS
@@ -256,7 +256,7 @@
  *
  *  \sa #SC_STOP_RTS_CC
  */
-#define SC_START_RTS_CC 4
+#define SC_START_RTS_CC               4
 
 /**
  * \brief Stop an RTS
@@ -287,7 +287,7 @@
  *
  *  \sa #SC_START_RTS_CC
  */
-#define SC_STOP_RTS_CC 5
+#define SC_STOP_RTS_CC                5
 
 /**
  * \brief DISABLE an RTS
@@ -318,7 +318,7 @@
  *
  *  \sa #SC_ENABLE_RTS_CC
  */
-#define SC_DISABLE_RTS_CC 6
+#define SC_DISABLE_RTS_CC             6
 
 /**
  * \brief Enable an RTS
@@ -349,7 +349,7 @@
  *
  *  \sa #SC_DISABLE_RTS_CC
  */
-#define SC_ENABLE_RTS_CC 7
+#define SC_ENABLE_RTS_CC              7
 
 /**
  * \brief Switch the running ATS
@@ -379,7 +379,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_SWITCH_ATS_CC 8
+#define SC_SWITCH_ATS_CC              8
 
 /**
  * \brief Jump the time in the running ATS
@@ -409,7 +409,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_JUMP_ATS_CC 9
+#define SC_JUMP_ATS_CC                9
 
 /**
  * \brief Set the Continue-On-Checksum-Failure flag
@@ -470,7 +470,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_APPEND_ATS_CC 11
+#define SC_APPEND_ATS_CC              11
 
 /**
  * \brief Request from cFE Table Services to manage a table
@@ -507,7 +507,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_MANAGE_TABLE_CC 12
+#define SC_MANAGE_TABLE_CC            12
 
 /**
  * \brief START a group of RTS
@@ -548,7 +548,7 @@
  *
  *  \sa #SC_STOP_RTS_GRP_CC
  */
-#define SC_START_RTS_GRP_CC 13
+#define SC_START_RTS_GRP_CC           13
 
 /**
  * \brief STOP a group of RTS
@@ -588,7 +588,7 @@
  *
  *  \sa #SC_START_RTS_GRP_CC
  */
-#define SC_STOP_RTS_GRP_CC 14
+#define SC_STOP_RTS_GRP_CC            14
 
 /**
  * \brief DISABLE a group of RTS
@@ -626,7 +626,7 @@
  *
  *  \sa #SC_ENABLE_RTS_GRP_CC
  */
-#define SC_DISABLE_RTS_GRP_CC 15
+#define SC_DISABLE_RTS_GRP_CC         15
 
 /**
  * \brief ENABLE a group of RTS
@@ -664,7 +664,7 @@
  *
  *  \sa #SC_DISABLE_RTS_GRP_CC
  */
-#define SC_ENABLE_RTS_GRP_CC 16
+#define SC_ENABLE_RTS_GRP_CC          16
 
 /**\}*/
 

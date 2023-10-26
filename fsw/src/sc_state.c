@@ -72,7 +72,7 @@ void SC_GetNextRtsTime(void)
      */
     for (i = SC_NUMBER_OF_RTS - 1; i >= 0; i--)
     {
-        if (SC_OperData.RtsInfoTblAddr[i].RtsStatus == SC_STATUS_EXECUTING)
+        if (SC_OperData.RtsInfoTblAddr[i].RtsStatus == SC_EXECUTING)
         {
             if (SC_OperData.RtsInfoTblAddr[i].NextCommandTime <= NextTime)
             {
@@ -114,7 +114,7 @@ void SC_UpdateNextTime(void)
     /*
      ** Check to see if the ATP needs to schedule commands
      */
-    if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING)
+    if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING)
     {
         SC_AppData.NextProcNumber = SC_ATP;
     }
@@ -160,7 +160,7 @@ void SC_GetNextRtsCommand(void)
         /*
          ** Find out if the RTS is EXECUTING or just STARTED
          */
-        if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_STATUS_EXECUTING)
+        if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_EXECUTING)
         {
             /*
              ** Get the information needed to find the next command
@@ -315,7 +315,7 @@ void SC_GetNextAtsCommand(void)
     uint16         CmdIndex;  /* ats command array index */
     SC_AtsEntry_t *EntryPtr;
 
-    if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_EXECUTING)
+    if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_EXECUTING)
     {
         /*
          ** Get the information that is needed to find the next command
@@ -353,17 +353,17 @@ void SC_GetNextAtsCommand(void)
 
         } /* end if */
     }
-    else if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STATUS_STARTING)
+    else if (SC_OperData.AtsCtrlBlckAddr->AtpState == SC_STARTING)
     {
         /*
-         ** The SC_STATUS_STARTING state is entered when an ATS inline
+         ** The SC_STARTING state is entered when an ATS inline
          ** switch has occurred and there are no commands to
          ** execute in the same second that the switch occurs.
-         ** The state is transitioned here to SC_STATUS_EXECUTING to
+         ** The state is transitioned here to SC_EXECUTING to
          ** commence execution of the new ATS on the next 1Hz
          ** command processing cycle.
          */
-        SC_OperData.AtsCtrlBlckAddr->AtpState = SC_STATUS_EXECUTING;
+        SC_OperData.AtsCtrlBlckAddr->AtpState = SC_EXECUTING;
 
     } /* end if ATS is EXECUTING*/
 }

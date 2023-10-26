@@ -86,7 +86,7 @@ void SC_StartRtsCmd(const SC_StartRtsCmd_t *Cmd)
                     /*
                      **  Initialize the RTS info table entry
                      */
-                    SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_STATUS_EXECUTING;
+                    SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_EXECUTING;
                     SC_OperData.RtsInfoTblAddr[RtsIndex].CmdCtr         = 0;
                     SC_OperData.RtsInfoTblAddr[RtsIndex].CmdErrCtr      = 0;
                     SC_OperData.RtsInfoTblAddr[RtsIndex].NextCommandPtr = 0;
@@ -194,7 +194,7 @@ void SC_StartRtsGrpCmd(const SC_StartRtsGrpCmd_t *Cmd)
                 if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_LOADED)
                 {
                     /* initialize the RTS info table entry */
-                    SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_STATUS_EXECUTING;
+                    SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus      = SC_EXECUTING;
                     SC_OperData.RtsInfoTblAddr[RtsIndex].CmdCtr         = 0;
                     SC_OperData.RtsInfoTblAddr[RtsIndex].CmdErrCtr      = 0;
                     SC_OperData.RtsInfoTblAddr[RtsIndex].NextCommandPtr = 0;
@@ -311,7 +311,7 @@ void SC_StopRtsGrpCmd(const SC_StopRtsGrpCmd_t *Cmd)
         for (RtsIndex = FirstIndex; RtsIndex <= LastIndex; RtsIndex++)
         {
             /* count the entries that were actually stopped */
-            if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_STATUS_EXECUTING)
+            if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_EXECUTING)
             {
                 SC_KillRts(RtsIndex);
                 StopCount++;
@@ -513,12 +513,12 @@ void SC_KillRts(uint16 RtsIndex)
         CFE_EVS_SendEvent(SC_KILLRTS_INV_INDEX_ERR_EID, CFE_EVS_EventType_ERROR, "RTS kill error: invalid RTS index %d",
                           RtsIndex);
     }
-    else if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_STATUS_EXECUTING)
+    else if (SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus == SC_EXECUTING)
     {
         /*
          ** Stop the RTS from executing
          */
-        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus       = SC_STATUS_LOADED;
+        SC_OperData.RtsInfoTblAddr[RtsIndex].RtsStatus       = SC_LOADED;
         SC_OperData.RtsInfoTblAddr[RtsIndex].NextCommandTime = SC_MAX_TIME;
 
         /*

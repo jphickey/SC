@@ -255,7 +255,7 @@ CFE_Status_t SC_InitTables(void)
     }
 
     /* ATP control block status table */
-    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_STATUS_IDLE;
+    SC_OperData.AtsCtrlBlckAddr->AtpState  = SC_IDLE;
     SC_OperData.AtsCtrlBlckAddr->AtsNumber = SC_NO_ATS;
     SC_OperData.AtsCtrlBlckAddr->CmdNumber = SC_INVALID_CMD_NUMBER;
 
@@ -268,7 +268,7 @@ CFE_Status_t SC_InitTables(void)
     {
         for (j = 0; j < SC_MAX_ATS_CMDS; j++)
         {
-            SC_OperData.AtsCmdStatusTblAddr[i][j] = SC_STATUS_EMPTY;
+            SC_OperData.AtsCmdStatusTblAddr[i][j] = SC_EMPTY;
         }
     }
 
@@ -277,7 +277,7 @@ CFE_Status_t SC_InitTables(void)
     {
         SC_OperData.RtsInfoTblAddr[i].NextCommandTime = SC_MAX_TIME;
         SC_OperData.RtsInfoTblAddr[i].NextCommandPtr  = 0;
-        SC_OperData.RtsInfoTblAddr[i].RtsStatus       = SC_STATUS_EMPTY;
+        SC_OperData.RtsInfoTblAddr[i].RtsStatus       = SC_EMPTY;
         SC_OperData.RtsInfoTblAddr[i].DisabledFlag    = true;
     }
 
