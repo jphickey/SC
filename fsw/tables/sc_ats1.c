@@ -42,7 +42,7 @@
 #include "cfe.h"
 #include "cfe_tbl_filedef.h"
 
-#include "sc_tbldefs.h"      /* defines SC table headers */
+#include "sc_tbl.h"      /* defines SC table headers */
 #include "sc_platform_cfg.h" /* defines table buffer size */
 #include "sc_msgdefs.h"      /* defines SC command code values */
 #include "sc_msgids.h"       /* defines SC packet msg ID's */
@@ -85,7 +85,7 @@ typedef struct
 /* Define the union to size the table correctly */
 typedef union
 {
-    SC_AtsStruct1_t ats;
+    SC_AtsEntry_t   ats[4];
     uint16          buf[SC_ATS_BUFF_SIZE];
 } SC_AtsTable1_t;
 
@@ -93,35 +93,37 @@ typedef union
 #define SC_MEMBER_SIZE(member) (sizeof(((SC_AtsStruct1_t *)0)->member))
 
 /* Used designated intializers to be verbose, modify as needed/desired */
-SC_AtsTable1_t SC_Ats1 = {
+SC_AtsStruct1_t SC_AtsEntry = {
     /* 1 */
-    .ats.hdr1.CmdNumber     = SC_COMMAND_NUM_INITIALIZER(1),
-    .ats.hdr1.TimeTag_MS    = SC_CMD1_TIME >> 16,
-    .ats.hdr1.TimeTag_LS    = SC_CMD1_TIME & 0xFFFF,
-    .ats.cmd1.CommandHeader = CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, SC_MEMBER_SIZE(cmd1), SC_NOOP_CC, SC_NOOP_CKSUM),
+   .hdr1 = {
+    .CmdNumber  = SC_COMMAND_NUM_INITIALIZER(1),
+    .TimeTag_MS = SC_CMD1_TIME >> 16,
+    .TimeTag_LS = SC_CMD1_TIME & 0xFFFF
+   },
+   .cmd1.CMD = CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, 0, SC_NOOP_CC, SC_NOOP_CKSUM)
 
+#ifdef jphfix
     /* 2 */
-    .ats.hdr2.CmdNumber  = SC_COMMAND_NUM_INITIALIZER(2),
-    .ats.hdr2.TimeTag_MS = SC_CMD2_TIME >> 16,
-    .ats.hdr2.TimeTag_LS = SC_CMD2_TIME & 0xFFFF,
-    .ats.cmd2.CommandHeader =
-        CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, SC_MEMBER_SIZE(cmd2), SC_ENABLE_RTS_CC, SC_ENABLE_RTS1_CKSUM),
-    .ats.cmd2.Payload.RtsNum = SC_RTS_NUM_INITIALIZER(1),
+    .ats[1].Header.CmdNumber  = SC_COMMAND_NUM_INITIALIZER(2),
+    .ats[1].Header.TimeTag_MS = SC_CMD2_TIME >> 16,
+    .ats[1].Header.TimeTag_LS = SC_CMD2_TIME & 0xFFFF,
+    .ats[1].Msg.BaseObject = CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, SC_MEMBER_SIZE(cmd2), SC_ENABLE_RTS_CC, SC_ENABLE_RTS1_CKSUM),
+    /* jphfix .ats[1].Msg.Payload.RtsNum = SC_RTS_NUM_INITIALIZER(1), */
 
     /* 3 */
-    .ats.hdr3.CmdNumber  = SC_COMMAND_NUM_INITIALIZER(3),
-    .ats.hdr3.TimeTag_MS = SC_CMD3_TIME >> 16,
-    .ats.hdr3.TimeTag_LS = SC_CMD3_TIME & 0xFFFF,
-    .ats.cmd3.CommandHeader =
-        CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, SC_MEMBER_SIZE(cmd3), SC_START_RTS_CC, SC_START_RTS1_CKSUM),
-    .ats.cmd3.Payload.RtsNum = SC_RTS_NUM_INITIALIZER(1),
+    .ats[2].Header.CmdNumber  = SC_COMMAND_NUM_INITIALIZER(3),
+    .ats[2].Header.TimeTag_MS = SC_CMD3_TIME >> 16,
+    .ats[2].Header.TimeTag_LS = SC_CMD3_TIME & 0xFFFF,
+    .ats[2].Msg.BaseObject = CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, SC_MEMBER_SIZE(cmd3), SC_START_RTS_CC, SC_START_RTS1_CKSUM),
+    /* jphfix ..ats[2].Msg.Payload.RtsNum = SC_RTS_NUM_INITIALIZER(1), */
 
     /* 4 */
-    .ats.hdr4.CmdNumber  = SC_COMMAND_NUM_INITIALIZER(4),
-    .ats.hdr4.TimeTag_MS = SC_CMD4_TIME >> 16,
-    .ats.hdr4.TimeTag_LS = SC_CMD4_TIME & 0xFFFF,
-    .ats.cmd4.CommandHeader =
-        CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, SC_MEMBER_SIZE(cmd4), SC_RESET_COUNTERS_CC, SC_RESET_COUNTERS_CKSUM)};
+    .ats[3].Header.CmdNumber  = SC_COMMAND_NUM_INITIALIZER(4),
+    .ats[3].Header.TimeTag_MS = SC_CMD4_TIME >> 16,
+    .ats[3].Header.TimeTag_LS = SC_CMD4_TIME & 0xFFFF,
+    .ats[3].Msg.BaseObject.Message = CFE_MSG_CMD_HDR_INIT(SC_CMD_MID, SC_MEMBER_SIZE(cmd4), SC_RESET_COUNTERS_CC, SC_RESET_COUNTERS_CKSUM)
+#endif
+};
 
 /* Macro for table structure */
-CFE_TBL_FILEDEF(SC_Ats1, SC.ATS_TBL1, SC Example ATS_TBL1, sc_ats1.tbl)
+CFE_TBL_FILEDEF(SC_AtsEntry, SC.ATS_TBL1, SC Example ATS_TBL1, sc_ats1.tbl)

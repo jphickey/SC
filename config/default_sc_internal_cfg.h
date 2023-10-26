@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ************************************************************************/
+
 /**
  * @file
  *   CFS Stored Command (SC) Application Private Config Definitions
@@ -115,19 +116,6 @@
  *       integer (65535).
  */
 #define SC_RTS_BUFF_SIZE 150
-#ifndef CFE_EDS_ENABLED_BUILD
-/**
- * \brief Max number of commands in each ATS
- *
- *  \par Description:
- *       The maximum number of commands that are allowed in each ATS
- *
- *  \par Limits:
- *       This parameter can't be larger than an unsigned 16 bit
- *       integer (65535).
- */
-
-#define SC_MAX_ATS_CMDS 1000
 
 /**
  * \brief The last RTS that will be sent with an #SC_RTS_START_INF_EID event message
@@ -139,7 +127,6 @@
  *  \par Limits:
  *       This parameter needs to be less than or equal to SC_NUMBER_OF_RTS
  */
-#endif
 #define SC_LAST_RTS_WITH_EVENTS 20
 
 /**

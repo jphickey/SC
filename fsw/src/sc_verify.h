@@ -36,8 +36,6 @@
  * Macro Definitions
  *************************************************************************/
 
-#ifndef CFE_EDS_ENABLED_BUILD
-
 #ifndef SC_MAX_CMDS_PER_SEC
 #error SC_MAX_CMDS_PER_SEC must be defined!
 #elif (SC_MAX_CMDS_PER_SEC > 65535)
@@ -209,5 +207,4 @@
 #error SC_MISSION_REV must be greater than or equal to zero!
 #endif
 
-#endif
 #endif

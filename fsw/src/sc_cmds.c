@@ -451,12 +451,8 @@ void SC_SendHkPacket(void)
      ** Fill out the RTS status bit mask
      ** First clear out the status mask
      */
-    for (i = 0; i < (SC_NUMBER_OF_RTS + (SC_NUMBER_OF_RTS_IN_UINT16 - 1)) / SC_NUMBER_OF_RTS_IN_UINT16; i++)
-    {
-        SC_OperData.HkPacket.Payload.RtsExecutingStatus[i] = 0;
-        SC_OperData.HkPacket.Payload.RtsDisabledStatus[i]  = 0;
-
-    } /* end for */
+    memset(SC_OperData.HkPacket.Payload.RtsExecutingStatus, 0, sizeof(SC_OperData.HkPacket.Payload.RtsExecutingStatus));
+    memset(SC_OperData.HkPacket.Payload.RtsDisabledStatus, 0, sizeof(SC_OperData.HkPacket.Payload.RtsDisabledStatus));
 
     for (i = 0; i < SC_NUMBER_OF_RTS; i++)
     {

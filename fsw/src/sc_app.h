@@ -31,9 +31,12 @@
 #include "cfe.h"
 #include "sc_index_types.h"
 #include "sc_platform_cfg.h"
-#include "sc_tbldefs.h"
-#include "sc_msgdefs.h"
 #include "sc_msg.h"
+#include "sc_tbl.h"
+
+
+typedef SC_AbsTimeTag_Atom_t SC_AbsTimeTag_t;
+typedef SC_RelTimeTag_Atom_t SC_RelTimeTag_t;
 
 /**
  * SC time accessor object

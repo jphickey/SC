@@ -69,4 +69,17 @@
  */
 #define SC_NUMBER_OF_RTS 64
 
+/**
+ * \brief Max number of commands in each ATS
+ *
+ *  \par Description:
+ *       The maximum number of commands that are allowed in each ATS
+ *
+ *  \par Limits:
+ *       This parameter can't be larger than an unsigned 16 bit
+ *       integer (65535).
+ */
+#define SC_MAX_ATS_CMDS 1000
+
+
 #endif

@@ -30,30 +30,6 @@
 #include "sc_extern_typedefs.h"
 #include "cfe_msg_hdr.h"
 
-/*************************************************************************
- * Macro Definitions
- *************************************************************************/
-#define SC_ATS_HEADER_SIZE (sizeof(SC_AtsEntryHeader_t)) /**< \brief ATS header size in bytes */
-#define SC_RTS_HEADER_SIZE (sizeof(SC_RtsEntryHeader_t)) /**< \brief RTS header size in bytes */
-
-#ifdef CFE_EDS_ENABLED_BUILD
-#include "sc_eds_typedefs.h"
-#else
-
-/**
- * \defgroup cfscstblids ID definitions for cFE Table Services manage table request command
- * \{
- */
-#define SC_TBL_ID_ATS_0     (1)                                  /**< \brief ATS 0 Table ID */
-#define SC_TBL_ID_APPEND    (SC_TBL_ID_ATS_0 + SC_NUMBER_OF_ATS) /**< \brief Append Table ID */
-#define SC_TBL_ID_RTS_0     (SC_TBL_ID_APPEND + 1)               /**< \brief RTS 0 Table ID */
-#define SC_TBL_ID_RTS_INFO  (SC_TBL_ID_RTS_0 + SC_NUMBER_OF_RTS) /**< \brief RTS Info Table ID */
-#define SC_TBL_ID_RTP_CTRL  (SC_TBL_ID_RTS_INFO + 1)             /**< \brief RTS Control Table ID */
-#define SC_TBL_ID_ATS_INFO  (SC_TBL_ID_RTP_CTRL + 1)             /**< \brief ATS Info Table ID */
-#define SC_TBL_ID_ATP_CTRL  (SC_TBL_ID_ATS_INFO + 1)             /**< \brief ATS Control Table ID */
-#define SC_TBL_ID_ATS_CMD_0 (SC_TBL_ID_ATP_CTRL + 1)             /**< \brief ATS 0 Command Table ID */
-/**\}*/
-
 /************************************************************************
  * Type Definitions
  ************************************************************************/
@@ -118,7 +94,5 @@ typedef struct
     SC_RtsEntryHeader_t     Header; /**< \brief RTS header */
     CFE_MSG_CommandHeader_t Msg;    /**< \brief Command Message to be sent */
 } SC_RtsEntry_t;
-
-#endif
 
 #endif

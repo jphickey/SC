@@ -27,6 +27,10 @@
 
 #include "common_types.h"
 
+#ifdef CFE_EDS_ENABLED_BUILD
+#include "sc_eds_typedefs.h"
+#else
+
 /**
  * @brief An identifier for RTS's
  *
@@ -105,6 +109,8 @@ typedef struct
 {
     uint16 v;
 } SC_EntryOffset_t;
+
+#endif
 
 /**
  * Convert from an ID or Number value (e.g. RTS/ATS identifier) to a native unsigned int

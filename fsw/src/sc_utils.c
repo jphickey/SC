@@ -47,16 +47,23 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 SC_TimeAccessor_t SC_LookupTimeAccessor(SC_TimeRef_Enum_t TimeRef)
 {
-    static const SC_TimeAccessor_t TIMEREF_LOOKUP[SC_TimeRef_MAX] = {[SC_TimeRef_USE_CFE_TIME] = {CFE_TIME_GetTime},
+    static const SC_TimeAccessor_t TIMEREF_LOOKUP[] = {[SC_TimeRef_USE_CFE_TIME] = {CFE_TIME_GetTime},
                                                                      [SC_TimeRef_USE_TAI]      = {CFE_TIME_GetTAI},
                                                                      [SC_TimeRef_USE_UTC]      = {CFE_TIME_GetUTC}};
 
-    if (TimeRef >= SC_TimeRef_MAX)
+    SC_TimeAccessor_t Result = { NULL };
+
+    if (TimeRef < (sizeof(TIMEREF_LOOKUP) / sizeof(TIMEREF_LOOKUP[0])))
     {
-        TimeRef = SC_TimeRef_USE_CFE_TIME;
+        Result = TIMEREF_LOOKUP[TimeRef];
     }
 
-    return TIMEREF_LOOKUP[TimeRef];
+    if (Result.GetTime == NULL)
+    {
+        Result.GetTime = CFE_TIME_GetTime;
+    }
+
+    return Result;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

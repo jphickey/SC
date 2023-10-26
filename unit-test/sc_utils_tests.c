@@ -48,7 +48,7 @@ void SC_LookupTimeAccessor_Test(void)
     UtAssert_NOT_NULL(Accessor.Addr);
 
     Accessor.Addr = NULL;
-    Accessor.Obj  = SC_LookupTimeAccessor(SC_TimeRef_MAX);
+    Accessor.Obj  = SC_LookupTimeAccessor((SC_TimeRef_Enum_t)134);
     UtAssert_NOT_NULL(Accessor.Addr);
 }
 

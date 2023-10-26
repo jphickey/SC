@@ -33,7 +33,12 @@
 #define SC_MSG_H
 
 #include "sc_interface_cfg.h"
+#include "sc_fcncodes.h"
 #include "sc_msgdefs.h"
 #include "sc_msgstruct.h"
+
+
+#define SC_MAX_TIME 0xFFFFFFFF /**< \brief Maximum time in SC */
+#define SC_NUMBER_OF_RTS_IN_UINT16 8 /* JPHFIX */
 
 #endif

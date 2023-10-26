@@ -30,6 +30,8 @@ if (CFE_EDS_ENABLED_BUILD)
   # In an EDS-based build, these files come generated from the EDS tool
   set(SC_CFGFILE_SRC_sc_interface_cfg "sc_eds_designparameters.h")
   set(SC_CFGFILE_SRC_sc_fcncodes      "sc_eds_cc.h")
+  set(SC_CFGFILE_SRC_sc_msgdefs       "sc_eds_typedefs.h")
+  set(SC_CFGFILE_SRC_sc_tbldefs       "sc_eds_typedefs.h")
   set(SC_CFGFILE_SRC_sc_msgstruct     "sc_eds_typedefs.h")
   set(SC_CFGFILE_SRC_sc_tblstruct     "sc_eds_typedefs.h")
 

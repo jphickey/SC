@@ -31,10 +31,6 @@
 #include "sc_extern_typedefs.h"
 #include "sc_fcncodes.h"
 
-#ifdef CFE_EDS_ENABLED_BUILD
-#include "sc_eds_typedefs.h"
-#else
-
 /************************************************************************
  * Macro Definitions
  ************************************************************************/
@@ -114,8 +110,6 @@ typedef uint8 SC_Process_Enum_t;
 #define SC_NONE SC_Process_NONE
 /**\}*/
 #endif
-
-#define SC_MAX_TIME 0xFFFFFFFF /**< \brief Maximum time in SC */
 
 /**
  * Enumeration for ATS identifiers
@@ -314,7 +308,5 @@ typedef struct
 } SC_RtsGrpCmd_Payload_t;
 
 /**\}*/
-
-#endif
 
 #endif

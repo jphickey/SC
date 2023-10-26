@@ -63,7 +63,7 @@
  *
  *  \sa #SC_RESET_COUNTERS_CC
  */
-#define SC_NOOP_CC                    0
+#define SC_NOOP_CC 0
 
 /**
  * \brief Reset Counters
@@ -94,7 +94,7 @@
  *
  *  \sa #SC_NOOP_CC
  */
-#define SC_RESET_COUNTERS_CC          1
+#define SC_RESET_COUNTERS_CC 1
 
 /**
  * \brief Start an ATS
@@ -127,7 +127,7 @@
  *
  *  \sa #SC_STOP_ATS_CC
  */
-#define SC_START_ATS_CC               2
+#define SC_START_ATS_CC 2
 /**
  * \brief Stop an ATS
  *
@@ -156,7 +156,7 @@
  *
  *  \sa #SC_START_ATS_CC
  */
-#define SC_STOP_ATS_CC                3
+#define SC_STOP_ATS_CC 3
 
 /**
  * \brief Start an RTS
@@ -192,7 +192,7 @@
  *
  *  \sa #SC_STOP_RTS_CC
  */
-#define SC_START_RTS_CC               4
+#define SC_START_RTS_CC 4
 
 /**
  * \brief Stop an RTS
@@ -223,7 +223,7 @@
  *
  *  \sa #SC_START_RTS_CC
  */
-#define SC_STOP_RTS_CC                5
+#define SC_STOP_RTS_CC 5
 
 /**
  * \brief DISABLE an RTS
@@ -254,7 +254,7 @@
  *
  *  \sa #SC_ENABLE_RTS_CC
  */
-#define SC_DISABLE_RTS_CC             6
+#define SC_DISABLE_RTS_CC 6
 
 /**
  * \brief Enable an RTS
@@ -285,7 +285,7 @@
  *
  *  \sa #SC_DISABLE_RTS_CC
  */
-#define SC_ENABLE_RTS_CC              7
+#define SC_ENABLE_RTS_CC 7
 
 /**
  * \brief Switch the running ATS
@@ -315,7 +315,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_SWITCH_ATS_CC              8
+#define SC_SWITCH_ATS_CC 8
 
 /**
  * \brief Jump the time in the running ATS
@@ -345,7 +345,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_JUMP_ATS_CC                9
+#define SC_JUMP_ATS_CC 9
 
 /**
  * \brief Set the Continue-On-Checksum-Failure flag
@@ -406,7 +406,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_APPEND_ATS_CC              11
+#define SC_APPEND_ATS_CC 11
 
 /**
  * \brief Request from cFE Table Services to manage a table
@@ -443,7 +443,7 @@
  *  \par Criticality
  *       None
  */
-#define SC_MANAGE_TABLE_CC            12
+#define SC_MANAGE_TABLE_CC 12
 
 /**
  * \brief START a group of RTS
@@ -484,7 +484,7 @@
  *
  *  \sa #SC_STOP_RTS_GRP_CC
  */
-#define SC_START_RTS_GRP_CC           13
+#define SC_START_RTS_GRP_CC 13
 
 /**
  * \brief STOP a group of RTS
@@ -524,7 +524,7 @@
  *
  *  \sa #SC_START_RTS_GRP_CC
  */
-#define SC_STOP_RTS_GRP_CC            14
+#define SC_STOP_RTS_GRP_CC 14
 
 /**
  * \brief DISABLE a group of RTS
@@ -562,7 +562,7 @@
  *
  *  \sa #SC_ENABLE_RTS_GRP_CC
  */
-#define SC_DISABLE_RTS_GRP_CC         15
+#define SC_DISABLE_RTS_GRP_CC 15
 
 /**
  * \brief ENABLE a group of RTS
@@ -600,7 +600,7 @@
  *
  *  \sa #SC_DISABLE_RTS_GRP_CC
  */
-#define SC_ENABLE_RTS_GRP_CC          16
+#define SC_ENABLE_RTS_GRP_CC 16
 
 /**\}*/
 
@@ -609,8 +609,6 @@
 #define SC_STOP_RTSGRP_CC    SC_STOP_RTS_GRP_CC
 #define SC_DISABLE_RTSGRP_CC SC_DISABLE_RTS_GRP_CC
 #define SC_ENABLE_RTSGRP_CC  SC_ENABLE_RTS_GRP_CC
-#endif
-
 #endif
 
 #endif
