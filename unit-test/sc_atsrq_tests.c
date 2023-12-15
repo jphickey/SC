@@ -448,6 +448,20 @@ void SC_SwitchAtsCmd_Test_Nominal(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
 }
 
+void SC_SwitchAtsCmd_Test_BadId(void)
+{
+    /* Execute the function being tested */
+    UtAssert_VOIDCALL(SC_SwitchAtsCmd(&UT_CmdBuf.SwitchAtsCmd));
+
+    /* Verify results */
+    UtAssert_True(SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false,
+                  "SC_OperData.AtsCtrlBlckAddr->SwitchPendFlag == false");
+    UtAssert_True(SC_OperData.HkPacket.Payload.CmdErrCtr == 1, "SC_OperData.HkPacket.Payload.CmdErrCtr == 1");
+
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, SC_SWITCH_ATS_CMD_IDLE_ERR_EID);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+}
+
 void SC_SwitchAtsCmd_Test_DestinationAtsNotLoaded(void)
 {
     SC_AtsIndex_t      AtsIndex  = SC_ATS_IDX_C(1);
@@ -1158,6 +1172,7 @@ void UtTest_Setup(void)
     UtTest_Add(SC_BeginAts_Test_InvalidAtsIndex, SC_Test_Setup, SC_Test_TearDown, "SC_BeginAts_Test_InvalidAtsIndex");
     UtTest_Add(SC_KillAts_Test, SC_Test_Setup, SC_Test_TearDown, "SC_KillAts_Test");
     UtTest_Add(SC_SwitchAtsCmd_Test_Nominal, SC_Test_Setup, SC_Test_TearDown, "SC_SwitchAtsCmd_Test_Nominal");
+    UtTest_Add(SC_SwitchAtsCmd_Test_BadId, SC_Test_Setup, SC_Test_TearDown, "SC_SwitchAtsCmd_Test_BadId");
     UtTest_Add(SC_SwitchAtsCmd_Test_DestinationAtsNotLoaded, SC_Test_Setup, SC_Test_TearDown,
                "SC_SwitchAtsCmd_Test_DestinationAtsNotLoaded");
     UtTest_Add(SC_SwitchAtsCmd_Test_AtpIdle, SC_Test_Setup, SC_Test_TearDown, "SC_SwitchAtsCmd_Test_AtpIdle");

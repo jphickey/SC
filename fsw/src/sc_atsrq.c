@@ -193,6 +193,7 @@ bool SC_BeginAts(SC_AtsIndex_t AtsIndex, uint16 TimeOffset)
      ** all of the commands have been skipped
      */
     TimeIndex = SC_SEQUENCE_IDX_FIRST; /* pointer into the time index table */
+    CmdIndex  = SC_COMMAND_IDX_C(0);   /* updated in loop */
 
     while (SC_IDX_WITHIN_LIMIT(TimeIndex, AtsInfoPtr->NumberOfCommands))
     {
@@ -526,6 +527,7 @@ void SC_JumpAtsCmd(const SC_JumpAtsCmd_t *Cmd)
          ** all of the commands have been skipped
          */
         TimeIndex  = SC_SEQUENCE_IDX_FIRST;
+        CmdIndex   = SC_COMMAND_IDX_C(0); /* updated in loop */
         NumSkipped = 0;
 
         while (SC_IDX_WITHIN_LIMIT(TimeIndex, AtsInfoPtr->NumberOfCommands))
